@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyDfB2Vl5SMv847Lbptwnqrx9c1RdOp880A</string>
+	<key>GCM_SENDER_ID</key>
+	<string>84598405696</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.tabpayApp</string>
+	<key>PROJECT_ID</key>
+	<string>tabpay-e9118</string>
+	<key>STORAGE_BUCKET</key>
+	<string>tabpay-e9118.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:84598405696:ios:d905dcf75daecfbd003da5</string>
+	<key>DATABASE_URL</key>
+	<string>https://tabpay-e9118-default-rtdb.asia-southeast1.firebasedatabase.app</string>
+</dict>
+</plist>
