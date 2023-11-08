@@ -63,7 +63,7 @@ class MyApp extends StatelessWidget {
             ),
             // theme: appThemeData[states.theme]!.themeData,
             builder: (context, child) {
-              return child!;
+              return Scaffold(body: child!);
             },
           ),
         );

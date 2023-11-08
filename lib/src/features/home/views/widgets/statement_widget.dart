@@ -195,7 +195,7 @@ class FailedWidget extends StatelessWidget {
             children: [
               textLabel(value: "Failed", fontSize: 20),
               Image.asset(
-                Assets.images.home.successIcon.path,
+                Assets.images.home.failedIcon.path,
                 height: 200,
                 width: 200,
               ),
@@ -223,15 +223,37 @@ class ScanningWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-        width: size.width,
-        padding: const EdgeInsets.fromLTRB(28, 45, 28, 45),
-        decoration: BoxDecoration(
-          borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(14), topRight: Radius.circular(14)),
-          border: Border.all(color: HexColor("#4DAA9C"), width: 1),
-          color: Colors.white,
-        ),
-      ),
+          width: size.width,
+          padding: const EdgeInsets.fromLTRB(28, 45, 28, 45),
+          decoration: BoxDecoration(
+            borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(14), topRight: Radius.circular(14)),
+            border: Border.all(color: HexColor("#4DAA9C"), width: 1),
+            color: Colors.white,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              textLabel(value: "Ready to Scan", fontSize: 20),
+              Image.asset(
+                Assets.images.home.nfcScan.path,
+                height: 200,
+                width: 200,
+              ),
+              SizedBox(
+                width: 200,
+                child: defaultButton(
+                    isEnabled: true,
+                    fillColor: Colors.grey,
+                    buttonBorderColor: Colors.grey,
+                    buttonTextColor: Colors.black,
+                    buttonLabel: "Cancel",
+                    onTap: () {
+                      context.read<HomeCubit>().finishTransaction();
+                    }),
+              ),
+            ],
+          )),
     );
   }
 }

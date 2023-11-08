@@ -32,9 +32,17 @@ class $AssetsImagesHomeGen {
   AssetGenImage get visaLogo =>
       const AssetGenImage('assets/images/home/Visa_logo.png');
 
+  /// File path: assets/images/home/failed-icon.png
+  AssetGenImage get failedIcon =>
+      const AssetGenImage('assets/images/home/failed-icon.png');
+
   /// File path: assets/images/home/more_grid_icon.png
   AssetGenImage get moreGridIcon =>
       const AssetGenImage('assets/images/home/more_grid_icon.png');
+
+  /// File path: assets/images/home/nfc_scan.png
+  AssetGenImage get nfcScan =>
+      const AssetGenImage('assets/images/home/nfc_scan.png');
 
   /// File path: assets/images/home/profile_avatar_icon.png
   AssetGenImage get profileAvatarIcon =>
@@ -56,7 +64,9 @@ class $AssetsImagesHomeGen {
   List<AssetGenImage> get values => [
         nfcIcon,
         visaLogo,
+        failedIcon,
         moreGridIcon,
+        nfcScan,
         profileAvatarIcon,
         successIcon,
         transactionIncoming,

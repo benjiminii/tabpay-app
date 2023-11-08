@@ -5,6 +5,7 @@ import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:pinput/pinput.dart';
 import 'package:tabpay_app/gen/assets.gen.dart';
 import 'package:tabpay_app/src/routes/app_router.gr.dart';
+import 'package:tabpay_app/tabpay_core/common/widgets/dialog_failed.dart';
 import 'package:tabpay_app/tabpay_core/tabpay_core.dart';
 
 @RoutePage()
@@ -62,7 +63,13 @@ class _LoginVerificationPageState extends State<LoginVerificationPage> {
           subtitle: "",
           pin: "",
           onTap: () {}));
-    } else {}
+    } else {
+      dialogAlertFailed(
+          context: context,
+          title: "Unsuccessful",
+          desc: "Wrong OTP code",
+          btnText: "Close");
+    }
   }
 
   @override

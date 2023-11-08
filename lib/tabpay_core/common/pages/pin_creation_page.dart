@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:pinput/pinput.dart';
 import 'package:tabpay_app/src/routes/app_router.gr.dart';
+import 'package:tabpay_app/tabpay_core/common/widgets/dialog_failed.dart';
 import 'package:tabpay_app/tabpay_core/tabpay_core.dart';
 
 @RoutePage()
@@ -52,6 +53,12 @@ class _OtpPageState extends State<OtpPage> {
     } else {
       if (widget.pin == _pinController.text) {
         context.router.push(HomeMainRoute());
+      } else {
+        dialogAlertFailed(
+            context: context,
+            title: "Unsuccessful",
+            desc: "Sorry, Your Pin code mismatch.",
+            btnText: "Close");
       }
     }
   }

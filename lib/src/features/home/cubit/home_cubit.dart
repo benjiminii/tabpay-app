@@ -102,12 +102,7 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> waitForScan(
-      {required BuildContext context,
-      required int amount,
-      required bool isInvoice}) async {
-    emit(state.copyWith(currentState: BottomSectionState.isScanning));
-    await context.router.pop();
-    await Future.delayed(const Duration(seconds: 2));
+      {required int amount, required bool isInvoice}) async {
     if (isInvoice) {
       await sendInvoice(invoiceAmount: amount);
     } else {
@@ -117,5 +112,16 @@ class HomeCubit extends Cubit<HomeState> {
 
   Future<void> finishTransaction() async {
     emit(state.copyWith(currentState: BottomSectionState.isDefault));
+  }
+
+  Future<void> tagRead(
+      {required BuildContext context,
+      required int amount,
+      required bool isInvoice}) async {
+    emit(state.copyWith(currentState: BottomSectionState.isScanning));
+
+    await context.router.pop();
+    await Future.delayed(const Duration(seconds: 2));
+    await waitForScan(amount: amount, isInvoice: isInvoice);
   }
 }

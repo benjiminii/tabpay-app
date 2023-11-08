@@ -79,47 +79,48 @@ class _HomeMainPageState extends State<HomeMainPage> {
                       child: VirtualCardWidget(user: state.userLogged),
                     ),
                     if (state.currentState == BottomSectionState.isDefault)
-                     const TransactionsWidget(),
+                      const TransactionsWidget(),
                     if (state.currentState == BottomSectionState.isSuccessful)
                       const SuccessfulWidget(),
                     if (state.currentState == BottomSectionState.isFailed)
                       const FailedWidget(),
                     if (state.currentState == BottomSectionState.isScanning)
                       const ScanningWidget(),
-                    SizedBox(
-                      child: InkWell(
-                        onTap: () {
-                          context.router.push(NumpadRoute(
-                              onTap: (amount) {
-                                context.read<HomeCubit>().waitForScan(
-                                    context: context,
-                                    amount: amount,
-                                    isInvoice: false);
-                              },
-                              onTap2: (amount) {
-                                context.read<HomeCubit>().waitForScan(
-                                    context: context,
-                                    amount: amount,
-                                    isInvoice: true);
-                              },
-                              topButtonTitle: "Send",
-                              bottomButtonTitle: "Invoice",
-                              pageTitle: "Transfer"));
-                        },
-                        child: ClipOval(
-                          // borderRadius: BorderRadius.circular(100),
-                          child: Container(
-                            height: 80,
-                            width: 80,
-                            padding: const EdgeInsets.all(10),
-                            color: HexColor("#4CAA9C"),
-                            child: Image.asset(
-                              Assets.images.home.nfcIcon.path,
+                    if (state.currentState == BottomSectionState.isDefault)
+                      SizedBox(
+                        child: InkWell(
+                          onTap: () {
+                            context.router.push(NumpadRoute(
+                                onTap: (amount) {
+                                  context.read<HomeCubit>().tagRead(
+                                      context: context,
+                                      amount: amount,
+                                      isInvoice: false);
+                                },
+                                onTap2: (amount) {
+                                  context.read<HomeCubit>().tagRead(
+                                      context: context,
+                                      amount: amount,
+                                      isInvoice: true);
+                                },
+                                topButtonTitle: "Send",
+                                bottomButtonTitle: "Invoice",
+                                pageTitle: "Transfer"));
+                          },
+                          child: ClipOval(
+                            // borderRadius: BorderRadius.circular(100),
+                            child: Container(
+                              height: 80,
+                              width: 80,
+                              padding: const EdgeInsets.all(10),
+                              color: HexColor("#4CAA9C"),
+                              child: Image.asset(
+                                Assets.images.home.nfcIcon.path,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
                     const SizedBox(height: 30),
                   ],
                 ),
