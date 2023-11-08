@@ -1,17 +1,21 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:tabpay_app/gen/assets.gen.dart';
 import 'package:tabpay_app/tabpay_core/common/widgets/appbar_container.dart';
 import 'package:tabpay_app/tabpay_core/tabpay_core.dart';
 
+@RoutePage()
 class NumpadPage extends StatefulWidget {
   final Function(int number) onTap;
+  final Function(int number) onTap2;
   final String topButtonTitle;
   final String bottomButtonTitle;
   final String pageTitle;
   const NumpadPage(
       {Key? key,
       required this.onTap,
+      required this.onTap2,
       required this.topButtonTitle,
       required this.bottomButtonTitle,
       required this.pageTitle})
@@ -122,34 +126,31 @@ class _NumpadPageState extends State<NumpadPage> {
                 margin: EdgeInsets.symmetric(horizontal: getHorizontalSize(88)),
                 child: Column(
                   children: [
-                    // buttonGradient(
-                    //     value: widget.topButtonTitle,
-                    //     hMargin: getSize(0),
-                    //     enabled: isNumButtonEnable,
-                    //     onTap: () => {
-                    //           widget.onTap(int.parse(
-                    //               tranAmountController.text.replaceAll(",", ''))),
-                    //         }),
+                    SizedBox(
+                      width: 200,
+                      child: defaultButton(
+                          isEnabled: isNumButtonEnable,
+                          fillColor: HexColor("#04715E"),
+                          buttonBorderColor: HexColor("#04715E"),
+                          buttonTextColor: Colors.white,
+                          buttonLabel: widget.topButtonTitle,
+                          onTap: () {
+                            widget.onTap(int.parse(
+                                tranAmountController.text.replaceAll(",", '')));
+                          }),
+                    ),
                     SizedBox(height: getSize(8)),
-                    // widget.bottomButtonTitle.isNotEmpty
-                    //     ? isNumButtonEnable
-                    //         ? buttonGradientBorder(
-                    //             value: widget.bottomButtonTitle,
-                    //             hMargin: getSize(0),
-                    //             onTap: () => {}
-                    //             //       context.router.pushNamed('invoice/invoicepage'),
-
-                    //             //   {
-                    //             // context.read<InvoiceCubit>().setAmount(
-                    //             //     amount: int.parse(tranAmountController.text)),
-                    //             // context.router.pushNamed('invoice/invoicepage'),
-                    //             // },
-                    //             )
-                    //         : buttonBorder(
-                    //             value: 'Нэхэмжлэх',
-                    //             hMargin: getSize(0),
-                    //           )
-                    //     : const SizedBox(),
+                    SizedBox(
+                      width: 200,
+                      child: defaultButton(
+                        buttonLabel: widget.bottomButtonTitle,
+                        buttonBorderColor: HexColor("#04715E"),
+                        onTap: () {
+                          widget.onTap2(int.parse(
+                              tranAmountController.text.replaceAll(",", '')));
+                        },
+                      ),
+                    )
                   ],
                 ),
               ),

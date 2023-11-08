@@ -24,6 +24,7 @@ class AppRouter extends $AppRouter {
       redirectToInitialRoute
     ]),
     AutoRoute(page: HomeMainRoute.page, path: '/home'),
+    AutoRoute(page: NumpadRoute.page, path: '/numpad'),
   ];
 }
 

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:tabpay_app/gen/assets.gen.dart';
+import 'package:tabpay_app/tabpay_core/models/home_repository/_responses.dart';
 import 'package:tabpay_app/tabpay_core/tabpay_core.dart';
 
 class VirtualCardWidget extends StatelessWidget {
-  const VirtualCardWidget({
-    Key? key,
-  }) : super(key: key);
+  final UserModel user;
+  const VirtualCardWidget({Key? key, required this.user}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -23,15 +24,15 @@ class VirtualCardWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 textLabel(
-                    value: "**** **** **** 1555",
+                    value: user.accountNo,
                     fontSize: 20,
                     maxLine: 1,
                     color: Colors.white),
-                textLabel(
-                    value: "VISA",
-                    fontSize: 20,
-                    maxLine: 1,
-                    color: Colors.white),
+                Image.asset(
+                  Assets.images.home.visaLogo.path,
+                  // height: 60,
+                  fit: BoxFit.contain,
+                )
               ],
             ),
             const Spacer(),
@@ -45,7 +46,7 @@ class VirtualCardWidget extends StatelessWidget {
             textLabel(
               align: TextAlign.left,
               fontSize: 18,
-              value: "200,000₮",
+              value: user.remainingBalance.toMoney(),
               color: Colors.white,
             ),
           ],
