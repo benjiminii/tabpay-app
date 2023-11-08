@@ -36,46 +36,41 @@ class _TransactionsWidgetState extends State<TransactionsWidget> {
                 border: Border.all(color: HexColor("#4DAA9C"), width: 1),
                 color: Colors.white,
               ),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(28, 20, 28, 9),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        textLabel(value: "Transactions", fontSize: 20),
-                        const Spacer(),
-                        textLabel(value: "Sort by"),
-                        const SizedBox(width: 8),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 5, vertical: 1),
-                          decoration: BoxDecoration(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(8)),
-                            border: Border.all(
-                                color: HexColor("#4DAA9C"), width: 1),
-                            color: HexColor("#4DAA9C"),
-                          ),
-                          child: textLabel(value: "Recent", fontSize: 11),
-                        )
-                      ],
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(28, 20, 28, 9),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          textLabel(value: "Transactions", fontSize: 20),
+                          const Spacer(),
+                          textLabel(value: "Sort by"),
+                          const SizedBox(width: 8),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 5, vertical: 1),
+                            decoration: BoxDecoration(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(8)),
+                              border: Border.all(
+                                  color: HexColor("#4DAA9C"), width: 1),
+                              color: HexColor("#4DAA9C"),
+                            ),
+                            child: textLabel(value: "Recent", fontSize: 11),
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                  const Divider(color: Colors.grey),
-                  SingleChildScrollView(
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    child: Column(
-                      children: [
-                        ...state.transactionList.map((transactionItem) {
-                          return statementItem(
-                              isIncome: transactionItem.isIncome,
-                              item: transactionItem);
-                        }),
-                      ],
-                    ),
-                  ),
-                ],
+                    const Divider(color: Colors.grey),
+                    ...state.transactionList.map((transactionItem) {
+                      return statementItem(
+                          isIncome: transactionItem.isIncome,
+                          item: transactionItem);
+                    }),
+                  ],
+                ),
               )),
         );
       },
