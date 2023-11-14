@@ -1,74 +1,73 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:tabpay_app/firebase_options.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sizer/sizer.dart';
+import 'package:tabpay_app/src/features/home/cubit/home_cubit.dart';
+import 'package:tabpay_app/src/features/home/home.dart';
+import 'package:tabpay_app/src/features/home/views/widgets/card_widget.dart';
+import 'package:tabpay_app/src/features/home/views/widgets/statement_widget.dart';
+import 'package:tabpay_app/src/routes/app_router.dart';
+// import 'package:tabpay_app/src/features/login/views.dart';
+// import 'package:tabpay_app/tabpay_core/common/pages/loan_numpad.dart';
+import 'package:tabpay_app/tabpay_core/tabpay_core.dart';
+import 'package:auto_route/auto_route.dart';
+import 'package:tabpay_app/src/routes/app_router.gr.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  runApp(const MyApp());
-  runApp(const MyApp());
+void main() {
+  runApp(MyApp());
+}
+
+class CustomRouteObserver extends AutoRouterObserver {
+  BuildContext context;
+  CustomRouteObserver(this.context);
+
+  // only override to observer tab routes
+
+  @override
+  void didPop(Route route, Route? previousRoute) {
+    // if (previousRoute?.settings.name == 'HomeRoute' &&
+    //     route.settings.name != null) {
+    //   context.read<AppCubit>().homeReload(context: context);
+    // } else if (previousRoute?.settings.name == 'HomeRoute' &&
+    //     route.settings.name == null) {
+    //   if (SharedParameter.isHomeReload) {
+    //     context.read<AppCubit>().homeReload(context: context);
+    //   }
+    // }
+    super.didPop(route, previousRoute);
+  }
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
+  final _appRouter = AppRouter();
+
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => MyHomePageState();
-}
-
-class MyHomePageState extends State<MyHomePage> {
-  int counter = 0;
-
-  void incrementCounter() {
-    setState(() {
-      counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
+    return Sizer(
+      builder: (context, orientation, deviceType) {
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider(create: (_) => HomeCubit()),
           ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
+          child: MaterialApp.router(
+            debugShowCheckedModeBanner: false,
+            key: AppService.navigationKey,
+            routeInformationParser: _appRouter.defaultRouteParser(),
+            routerDelegate: AutoRouterDelegate(
+              _appRouter,
+              // this should always return new instances
+
+              navigatorObservers: () =>
+                  [AutoRouteObserver(), CustomRouteObserver(context)],
+            ),
+            // theme: appThemeData[states.theme]!.themeData,
+            builder: (context, child) {
+              return Scaffold(body: child!);
+            },
+          ),
+        );
+      },
     );
   }
 }
