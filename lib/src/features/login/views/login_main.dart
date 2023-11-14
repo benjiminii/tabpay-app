@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:tabpay_app/controller/firebase_auth.dart';
 import 'package:tabpay_app/gen/assets.gen.dart';
 import 'package:tabpay_app/src/routes/app_router.gr.dart';
 import 'package:tabpay_app/tabpay_core/tabpay_core.dart';
@@ -109,10 +110,11 @@ class _LoginMainPageState extends State<LoginMainPage> {
                     buttonTextColor: Colors.white,
                     buttonLabel: "Generate OTP",
                     onTap: () {
-                      context.router.push(LoginRouteWrapper(children: [
-                        LoginVerificationRoute(
-                            phoneNumber: _usernameController.text)
-                      ]));
+                      verifyPhoneNumber(_usernameController.text);
+                      // context.router.push(LoginRouteWrapper(children: [
+                      //   LoginVerificationRoute(
+                      //       phoneNumber: _usernameController.text)
+                      // ]));
                     }),
               )
             : const SizedBox.shrink();

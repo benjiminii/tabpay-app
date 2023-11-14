@@ -12,9 +12,20 @@ import 'package:tabpay_app/tabpay_core/tabpay_core.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:tabpay_app/src/routes/app_router.gr.dart';
 
-void main() {
+import 'package:firebase_core/firebase_core.dart';
+import 'package:tabpay_app/firebase_options.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(MyApp());
 }
+
+// void main() {
+//   runApp(MyApp());
+// }
 
 class CustomRouteObserver extends AutoRouterObserver {
   BuildContext context;

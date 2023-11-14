@@ -4,16 +4,17 @@ final FirebaseAuth auth = FirebaseAuth.instance;
 
 Future<void> verifyPhoneNumber(String phoneNumber) async {
   await auth.verifyPhoneNumber(
-    phoneNumber: phoneNumber,
+    phoneNumber: '+976$phoneNumber',
     verificationCompleted: (PhoneAuthCredential credential) async {
-      // Auto-retrieve verification code
+      print("sda verificationCompleted");
       await auth.signInWithCredential(credential);
     },
     verificationFailed: (FirebaseAuthException e) {
       // Verification failed
+      print("sda verificationFailed");
     },
     codeSent: (String verificationId, int? resendToken) async {
-      // Save the verification ID for future use
+      print("sda codeSent");
       String smsCode = 'xxxxxx'; // Code input by the user
       PhoneAuthCredential credential = PhoneAuthProvider.credential(
         verificationId: verificationId,
@@ -22,7 +23,9 @@ Future<void> verifyPhoneNumber(String phoneNumber) async {
       // Sign the user in with the credential
       await auth.signInWithCredential(credential);
     },
-    codeAutoRetrievalTimeout: (String verificationId) {},
+    codeAutoRetrievalTimeout: (String verificationId) {
+      print("sda codeAutoRetrievalTimeout");
+    },
     timeout: const Duration(seconds: 60),
   );
 }
