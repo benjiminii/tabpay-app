@@ -2,15 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sizer/sizer.dart';
 import 'package:tabpay_app/src/features/home/cubit/home_cubit.dart';
-import 'package:tabpay_app/src/features/home/home.dart';
-import 'package:tabpay_app/src/features/home/views/widgets/card_widget.dart';
-import 'package:tabpay_app/src/features/home/views/widgets/statement_widget.dart';
+import 'package:tabpay_app/src/features/login/cubit/login_cubit.dart';
 import 'package:tabpay_app/src/routes/app_router.dart';
-// import 'package:tabpay_app/src/features/login/views.dart';
-// import 'package:tabpay_app/tabpay_core/common/pages/loan_numpad.dart';
 import 'package:tabpay_app/tabpay_core/tabpay_core.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:tabpay_app/src/routes/app_router.gr.dart';
 
 void main() {
   runApp(MyApp());
@@ -49,6 +44,7 @@ class MyApp extends StatelessWidget {
         return MultiBlocProvider(
           providers: [
             BlocProvider(create: (_) => HomeCubit()),
+            BlocProvider(create: (_) => LoginCubit()),
           ],
           child: MaterialApp.router(
             debugShowCheckedModeBanner: false,

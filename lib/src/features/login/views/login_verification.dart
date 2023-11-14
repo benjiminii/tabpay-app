@@ -1,11 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_countdown_timer/index.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:pinput/pinput.dart';
 import 'package:tabpay_app/gen/assets.gen.dart';
-import 'package:tabpay_app/src/routes/app_router.gr.dart';
-import 'package:tabpay_app/tabpay_core/common/widgets/dialog_failed.dart';
+import 'package:tabpay_app/src/features/login/cubit/login_cubit.dart';
+
 import 'package:tabpay_app/tabpay_core/tabpay_core.dart';
 
 @RoutePage()
@@ -54,22 +55,6 @@ class _LoginVerificationPageState extends State<LoginVerificationPage> {
       endTime = DateTime.now().millisecondsSinceEpoch + 1000 * 29;
       timerEnd = false;
     });
-  }
-
-  void inCompleted() {
-    if (_pinController.text == "0000") {
-      context.router.push(OtpRoute(
-          title: "Create transaction PIN",
-          subtitle: "",
-          pin: "",
-          onTap: () {}));
-    } else {
-      dialogAlertFailed(
-          context: context,
-          title: "Unsuccessful",
-          desc: "Wrong OTP code",
-          btnText: "Close");
-    }
   }
 
   @override
@@ -157,7 +142,8 @@ class _LoginVerificationPageState extends State<LoginVerificationPage> {
                 obscureText: false,
                 onCompleted: (pin) {
                   _pinController.text = pin;
-                  inCompleted();
+                  context.read<LoginCubit>().verifyOtp(
+                      context: context, otpCode: _pinController.text);
                 },
               ),
               const SizedBox(height: 12),
@@ -216,7 +202,8 @@ class _LoginVerificationPageState extends State<LoginVerificationPage> {
                       buttonTextColor: Colors.white,
                       buttonLabel: "Continue",
                       onTap: () {
-                        inCompleted();
+                        context.read<LoginCubit>().verifyOtp(
+                            context: context, otpCode: _pinController.text);
                       }),
                 ),
                 const SizedBox(height: 13),

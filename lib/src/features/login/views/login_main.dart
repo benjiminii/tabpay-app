@@ -1,8 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:tabpay_app/gen/assets.gen.dart';
-import 'package:tabpay_app/src/routes/app_router.gr.dart';
+import 'package:tabpay_app/src/features/login/cubit/login_cubit.dart';
 import 'package:tabpay_app/tabpay_core/tabpay_core.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 
@@ -109,10 +110,9 @@ class _LoginMainPageState extends State<LoginMainPage> {
                     buttonTextColor: Colors.white,
                     buttonLabel: "Generate OTP",
                     onTap: () {
-                      context.router.push(LoginRouteWrapper(children: [
-                        LoginVerificationRoute(
-                            phoneNumber: _usernameController.text)
-                      ]));
+                      context.read<LoginCubit>().generateOtp(
+                          context: context,
+                          phoneNumber: _usernameController.text);
                     }),
               )
             : const SizedBox.shrink();

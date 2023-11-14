@@ -1,9 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:pinput/pinput.dart';
-import 'package:tabpay_app/src/routes/app_router.gr.dart';
-import 'package:tabpay_app/tabpay_core/common/widgets/dialog_failed.dart';
+import 'package:tabpay_app/src/features/login/cubit/login_cubit.dart';
 import 'package:tabpay_app/tabpay_core/tabpay_core.dart';
 
 @RoutePage()
@@ -41,26 +41,6 @@ class _OtpPageState extends State<OtpPage> {
       }
     });
     super.initState();
-  }
-
-  void onCompleted() {
-    if (widget.pin == "") {
-      context.router.push(OtpRoute(
-          title: "Create transaction PIN",
-          subtitle: "Please re-enter your 4 digit PIN",
-          pin: _pinController.text,
-          onTap: () {}));
-    } else {
-      if (widget.pin == _pinController.text) {
-        context.router.push(HomeMainRoute());
-      } else {
-        dialogAlertFailed(
-            context: context,
-            title: "Unsuccessful",
-            desc: "Sorry, Your Pin code mismatch.",
-            btnText: "Close");
-      }
-    }
   }
 
   @override
@@ -141,7 +121,10 @@ class _OtpPageState extends State<OtpPage> {
                 obscureText: false,
                 onCompleted: (pin) {
                   _pinController.text = pin;
-                  onCompleted();
+                  context.read<LoginCubit>().pinCompleted(
+                      context: context,
+                      pin: widget.pin,
+                      confirmPin: _pinController.text);
                 },
               ),
             ],
@@ -162,7 +145,10 @@ class _OtpPageState extends State<OtpPage> {
                       buttonTextColor: Colors.white,
                       buttonLabel: widget.pin != "" ? "Create pin" : "Continue",
                       onTap: () {
-                        onCompleted();
+                        context.read<LoginCubit>().pinCompleted(
+                            context: context,
+                            pin: widget.pin,
+                            confirmPin: _pinController.text);
                       }),
                 ),
                 const SizedBox(height: 13),
