@@ -22,10 +22,10 @@ class NumpadPage extends StatefulWidget {
       : super(key: key);
 
   @override
-  _NumpadPageState createState() => _NumpadPageState();
+  NumpadPageState createState() => NumpadPageState();
 }
 
-class _NumpadPageState extends State<NumpadPage> {
+class NumpadPageState extends State<NumpadPage> {
   final TextEditingController tranAmountController = TextEditingController();
   late bool isNumButtonEnable = false;
   late int amount = 0;
@@ -64,13 +64,9 @@ class _NumpadPageState extends State<NumpadPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 20.0),
-                    child: Text(
-                      "Мөнгөн дүн",
-                      style:
-                          TextStyle(color: Colors.grey, fontSize: getSize(13)),
-                    ),
-                  ),
+                      padding: const EdgeInsets.only(bottom: 20.0),
+                      child: textLabel(
+                          value: "Мөнгөн дүн", fontSize: getSize(13))),
                   Padding(
                     padding: EdgeInsets.symmetric(
                       horizontal: getHorizontalSize(78),

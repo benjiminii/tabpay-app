@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:tabpay_app/gen/fonts.gen.dart';
 
 class InputNormal extends StatelessWidget {
   const InputNormal({
@@ -55,7 +56,7 @@ class InputNormal extends StatelessWidget {
               filled: true,
               fillColor: enabled ? Colors.white : Colors.grey,
               labelStyle: const TextStyle(
-                  // fontFamily: FontFamily.codeNextSemiBold,
+                  fontFamily: FontFamily.codeNextSemiBold,
                   fontSize: 13,
                   color: Colors.grey),
               contentPadding: const EdgeInsets.only(
@@ -132,8 +133,7 @@ class InputMultiIcon extends StatelessWidget {
             keyboardType: keyboardType,
             controller: controller,
             style: const TextStyle(
-                // fontFamily: FontFamily.codeNextSemiBold,
-                color: Colors.black),
+                fontFamily: FontFamily.codeNextSemiBold, color: Colors.black),
             decoration: InputDecoration(
               fillColor: enabled ? Colors.white : Colors.grey,
               filled: true,

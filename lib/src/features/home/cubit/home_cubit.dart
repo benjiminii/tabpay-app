@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+// ignore: depend_on_referenced_packages
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:tabpay_app/tabpay_core/models/home_repository/_responses.dart';
 import 'package:auto_route/auto_route.dart';

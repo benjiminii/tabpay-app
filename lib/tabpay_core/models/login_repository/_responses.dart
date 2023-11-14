@@ -8,4 +8,4 @@ part '_responses.freezed.dart';
 part '_responses.g.dart';
 
 // My part files
-part 'home_response.dart';
+part 'login_response.dart';

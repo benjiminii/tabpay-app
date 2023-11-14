@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tabpay_app/gen/fonts.gen.dart';
 
 Text textLabel(
     {required String value,
@@ -10,6 +11,7 @@ Text textLabel(
   return Text(
     value,
     style: TextStyle(
+      fontFamily: FontFamily.codeNextSemiBold,
       fontSize: fontSize.toDouble(),
       color: color ?? Colors.black,
       overflow: TextOverflow.ellipsis,

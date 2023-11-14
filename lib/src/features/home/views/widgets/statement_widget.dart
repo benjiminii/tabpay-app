@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tabpay_app/gen/assets.gen.dart';
@@ -9,10 +10,10 @@ class TransactionsWidget extends StatefulWidget {
   const TransactionsWidget({Key? key}) : super(key: key);
 
   @override
-  _TransactionsWidgetState createState() => _TransactionsWidgetState();
+  TransactionsWidgetState createState() => TransactionsWidgetState();
 }
 
-class _TransactionsWidgetState extends State<TransactionsWidget> {
+class TransactionsWidgetState extends State<TransactionsWidget> {
   @override
   void initState() {
     super.initState();

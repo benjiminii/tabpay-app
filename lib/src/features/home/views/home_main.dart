@@ -13,10 +13,10 @@ class HomeMainPage extends StatefulWidget {
   const HomeMainPage({Key? key}) : super(key: key);
 
   @override
-  _HomeMainPageState createState() => _HomeMainPageState();
+  HomeMainPageState createState() => HomeMainPageState();
 }
 
-class _HomeMainPageState extends State<HomeMainPage> {
+class HomeMainPageState extends State<HomeMainPage> {
   @override
   void initState() {
     context.read<HomeCubit>().initUser(context: context);

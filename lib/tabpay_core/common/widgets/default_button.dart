@@ -34,14 +34,6 @@ Widget defaultButton(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                    // SvgPicture.asset(
-                    //   iconWidget == ""
-                    //       ? Assets.images.cam.imgIconadd1.path
-                    //       : iconWidget,
-                    //   fit: BoxFit.contain,
-                    //   height: 22,
-                    //   color: buttonIconColor,
-                    // ),
                     const SizedBox(width: 8),
                     textLabel(
                         value: buttonLabel,
