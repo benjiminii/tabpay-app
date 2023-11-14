@@ -15,10 +15,10 @@ class LoginVerificationPage extends StatefulWidget {
       : super(key: key);
   final String phoneNumber;
   @override
-  _LoginVerificationPageState createState() => _LoginVerificationPageState();
+  LoginVerificationPageState createState() => LoginVerificationPageState();
 }
 
-class _LoginVerificationPageState extends State<LoginVerificationPage> {
+class LoginVerificationPageState extends State<LoginVerificationPage> {
   final TextEditingController _pinController = TextEditingController();
   int endTime = DateTime.now().millisecondsSinceEpoch + 1000 * 29;
   late bool timerEnd = false;

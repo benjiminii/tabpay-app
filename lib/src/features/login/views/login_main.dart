@@ -12,10 +12,10 @@ class LoginMainPage extends StatefulWidget {
   const LoginMainPage({Key? key}) : super(key: key);
 
   @override
-  _LoginMainPageState createState() => _LoginMainPageState();
+  LoginMainPageState createState() => LoginMainPageState();
 }
 
-class _LoginMainPageState extends State<LoginMainPage> {
+class LoginMainPageState extends State<LoginMainPage> {
   bool showIcon = false;
   TextEditingController _usernameController = TextEditingController();
 

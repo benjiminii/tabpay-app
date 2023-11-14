@@ -1,5 +1,6 @@
 library responses;
 
+// ignore: depend_on_referenced_packages
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 // Freezed part files
