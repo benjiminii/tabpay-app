@@ -5,7 +5,8 @@ class LoginState with _$LoginState {
   const LoginState._();
   const factory LoginState(
       {@Default(false) bool loading,
-      @Default("") String phoneNumber}) = _LoginState;
+      @Default("") String phoneNumber,
+      @Default("") String verificationId}) = _LoginState;
 
   factory LoginState.initial() => const LoginState();
 

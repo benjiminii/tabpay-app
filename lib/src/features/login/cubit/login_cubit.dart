@@ -3,8 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 // ignore: depend_on_referenced_packages
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:tabpay_app/controller/firebase_auth.dart';
 import 'package:tabpay_app/src/routes/app_router.gr.dart';
 import 'package:tabpay_app/tabpay_core/common/widgets/dialog_failed.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 // Freezed part files
 part 'login_cubit.freezed.dart';
@@ -48,20 +50,27 @@ class LoginCubit extends Cubit<LoginState> {
   // OTP uusgeh logic
   Future<void> generateOtp(
       {required BuildContext context, required String phoneNumber}) async {
-    // TODO: Amjilttai OTP shidsen bol doorh hesgiig ashiglah
-    if (true) {
-      emit(state.copyWith(phoneNumber: phoneNumber));
+    verifyPhoneNumber(phoneNumber, (verificationId) {
+      emit(state.copyWith(
+          phoneNumber: phoneNumber, verificationId: verificationId));
       navToOtpPage(context: context);
-    }
+    });
   }
 
   // OTP-g shalgah logic
   Future<void> verifyOtp(
       {required BuildContext context, required String otpCode}) async {
     // TODO: OTP code amjilttai bol
-    if (otpCode == "0000") {
+
+    PhoneAuthCredential credential = PhoneAuthProvider.credential(
+      verificationId: state.verificationId,
+      smsCode: otpCode,
+    );
+
+    try {
+      await auth.signInWithCredential(credential);
       checkTransactionPin(context: context);
-    } else {
+    } catch (err) {
       dialogAlertFailed(
           context: context,
           title: "Unsuccessful",

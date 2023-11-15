@@ -111,10 +111,9 @@ class LoginMainPageState extends State<LoginMainPage> {
                     buttonTextColor: Colors.white,
                     buttonLabel: "Generate OTP",
                     onTap: () {
-                      verifyPhoneNumber(_usernameController.text);
-                      // context.read<LoginCubit>().generateOtp(
-                      //     context: context,
-                      //     phoneNumber: _usernameController.text);
+                      context.read<LoginCubit>().generateOtp(
+                          context: context,
+                          phoneNumber: _usernameController.text);
                     }),
               )
             : const SizedBox.shrink();

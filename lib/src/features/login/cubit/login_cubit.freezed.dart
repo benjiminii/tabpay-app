@@ -22,6 +22,7 @@ LoginState _$LoginStateFromJson(Map<String, dynamic> json) {
 mixin _$LoginState {
   bool get loading => throw _privateConstructorUsedError;
   String get phoneNumber => throw _privateConstructorUsedError;
+  String get verificationId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +36,7 @@ abstract class $LoginStateCopyWith<$Res> {
           LoginState value, $Res Function(LoginState) then) =
       _$LoginStateCopyWithImpl<$Res, LoginState>;
   @useResult
-  $Res call({bool loading, String phoneNumber});
+  $Res call({bool loading, String phoneNumber, String verificationId});
 }
 
 /// @nodoc
@@ -53,6 +54,7 @@ class _$LoginStateCopyWithImpl<$Res, $Val extends LoginState>
   $Res call({
     Object? loading = null,
     Object? phoneNumber = null,
+    Object? verificationId = null,
   }) {
     return _then(_value.copyWith(
       loading: null == loading
@@ -62,6 +64,10 @@ class _$LoginStateCopyWithImpl<$Res, $Val extends LoginState>
       phoneNumber: null == phoneNumber
           ? _value.phoneNumber
           : phoneNumber // ignore: cast_nullable_to_non_nullable
+              as String,
+      verificationId: null == verificationId
+          ? _value.verificationId
+          : verificationId // ignore: cast_nullable_to_non_nullable
               as String,
     ) as $Val);
   }
@@ -75,7 +81,7 @@ abstract class _$$LoginStateImplCopyWith<$Res>
       __$$LoginStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({bool loading, String phoneNumber});
+  $Res call({bool loading, String phoneNumber, String verificationId});
 }
 
 /// @nodoc
@@ -91,6 +97,7 @@ class __$$LoginStateImplCopyWithImpl<$Res>
   $Res call({
     Object? loading = null,
     Object? phoneNumber = null,
+    Object? verificationId = null,
   }) {
     return _then(_$LoginStateImpl(
       loading: null == loading
@@ -101,6 +108,10 @@ class __$$LoginStateImplCopyWithImpl<$Res>
           ? _value.phoneNumber
           : phoneNumber // ignore: cast_nullable_to_non_nullable
               as String,
+      verificationId: null == verificationId
+          ? _value.verificationId
+          : verificationId // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -108,7 +119,8 @@ class __$$LoginStateImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$LoginStateImpl extends _LoginState {
-  const _$LoginStateImpl({this.loading = false, this.phoneNumber = ""})
+  const _$LoginStateImpl(
+      {this.loading = false, this.phoneNumber = "", this.verificationId = ""})
       : super._();
 
   factory _$LoginStateImpl.fromJson(Map<String, dynamic> json) =>
@@ -120,10 +132,13 @@ class _$LoginStateImpl extends _LoginState {
   @override
   @JsonKey()
   final String phoneNumber;
+  @override
+  @JsonKey()
+  final String verificationId;
 
   @override
   String toString() {
-    return 'LoginState(loading: $loading, phoneNumber: $phoneNumber)';
+    return 'LoginState(loading: $loading, phoneNumber: $phoneNumber, verificationId: $verificationId)';
   }
 
   @override
@@ -133,12 +148,15 @@ class _$LoginStateImpl extends _LoginState {
             other is _$LoginStateImpl &&
             (identical(other.loading, loading) || other.loading == loading) &&
             (identical(other.phoneNumber, phoneNumber) ||
-                other.phoneNumber == phoneNumber));
+                other.phoneNumber == phoneNumber) &&
+            (identical(other.verificationId, verificationId) ||
+                other.verificationId == verificationId));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, loading, phoneNumber);
+  int get hashCode =>
+      Object.hash(runtimeType, loading, phoneNumber, verificationId);
 
   @JsonKey(ignore: true)
   @override
@@ -155,8 +173,10 @@ class _$LoginStateImpl extends _LoginState {
 }
 
 abstract class _LoginState extends LoginState {
-  const factory _LoginState({final bool loading, final String phoneNumber}) =
-      _$LoginStateImpl;
+  const factory _LoginState(
+      {final bool loading,
+      final String phoneNumber,
+      final String verificationId}) = _$LoginStateImpl;
   const _LoginState._() : super._();
 
   factory _LoginState.fromJson(Map<String, dynamic> json) =
@@ -166,6 +186,8 @@ abstract class _LoginState extends LoginState {
   bool get loading;
   @override
   String get phoneNumber;
+  @override
+  String get verificationId;
   @override
   @JsonKey(ignore: true)
   _$$LoginStateImplCopyWith<_$LoginStateImpl> get copyWith =>
