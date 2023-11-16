@@ -62,12 +62,12 @@ class LoginCubit extends Cubit<LoginState> {
       {required BuildContext context, required String otpCode}) async {
     // TODO: OTP code amjilttai bol
 
-    PhoneAuthCredential credential = PhoneAuthProvider.credential(
-      verificationId: state.verificationId,
-      smsCode: otpCode,
-    );
-
     try {
+      PhoneAuthCredential credential = PhoneAuthProvider.credential(
+        verificationId: state.verificationId,
+        smsCode: otpCode,
+      );
+
       await auth.signInWithCredential(credential);
       checkTransactionPin(context: context);
     } catch (err) {
