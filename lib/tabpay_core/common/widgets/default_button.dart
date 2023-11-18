@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:tabpay_app/tabpay_core/common/widgets/text_label.dart';
 
-Widget defaultButton(
-    {required String buttonLabel,
-    required Function() onTap,
-    isEnabled = true,
-    Color fillColor = Colors.transparent,
-    bool withIcon = true,
-    String iconWidget = "",
-    Color? buttonIconColor,
-    Color? buttonTextColor,
-    Color? buttonBorderColor}) {
+Widget defaultButton({
+  required String buttonLabel,
+  required Function() onTap,
+  isEnabled = true,
+  Color fillColor = Colors.transparent,
+  bool withIcon = true,
+  double? widthSize,
+  String iconWidget = "",
+  Color? buttonIconColor,
+  Color? buttonTextColor,
+  Color? buttonBorderColor,
+}) {
   return InkWell(
     onTap: () {
       if (isEnabled) {
@@ -19,6 +21,7 @@ Widget defaultButton(
     },
     child: Container(
         height: 48,
+        width: widthSize,
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
         decoration: BoxDecoration(
           color: isEnabled ? fillColor : Colors.grey,

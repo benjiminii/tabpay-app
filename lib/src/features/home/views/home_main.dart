@@ -121,7 +121,6 @@ class HomeMainPageState extends State<HomeMainPage> {
                           ),
                         ),
                       ),
-                    const SizedBox(height: 30),
                   ],
                 ),
               ],

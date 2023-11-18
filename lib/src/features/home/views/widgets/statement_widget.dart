@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tabpay_app/gen/assets.gen.dart';
@@ -30,11 +29,11 @@ class TransactionsWidgetState extends State<TransactionsWidget> {
       builder: (context, state) {
         return Expanded(
           child: Container(
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.only(
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(14),
                     topRight: Radius.circular(14)),
-                border: Border.all(color: HexColor("#4DAA9C"), width: 1),
+                // border: Border.all(color: HexColor("#4DAA9C"), width: 1),
                 color: Colors.white,
               ),
               child: SingleChildScrollView(

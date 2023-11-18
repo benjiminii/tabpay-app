@@ -59,7 +59,7 @@ class LoginCubit extends Cubit<LoginState> {
   Future<void> verifyOtp(
       {required BuildContext context, required String otpCode}) async {
     // TODO: OTP code amjilttai bol
-    if (otpCode == "0000") {
+    if (otpCode == "000000") {
       checkTransactionPin(context: context);
     } else {
       dialogAlertFailed(
@@ -95,7 +95,10 @@ class LoginCubit extends Cubit<LoginState> {
             context: context,
             title: "Unsuccessful",
             desc: "Sorry, Your Pin code mismatch.",
-            btnText: "Close");
+            btnText: "Close",
+            onTap: () {
+              context.router.pop();
+            });
       }
     }
   }

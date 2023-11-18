@@ -29,7 +29,7 @@ class LoginVerificationPageState extends State<LoginVerificationPage> {
   void initState() {
     _controller = CountdownTimerController(endTime: endTime);
     _pinController.addListener(() {
-      if (_pinController.length == 4) {
+      if (_pinController.length == 6) {
         setState(() {
           inputDone = true;
         });
@@ -91,6 +91,7 @@ class LoginVerificationPageState extends State<LoginVerificationPage> {
               const SizedBox(height: 35),
               Pinput(
                 key: const Key("validation_otp_pinput"),
+                length: 6,
                 controller: _pinController,
                 // autofocus: false,
                 // Auto focus here ^

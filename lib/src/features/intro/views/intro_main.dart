@@ -6,6 +6,7 @@ import 'package:tabpay_app/gen/assets.gen.dart';
 import 'package:tabpay_app/gen/fonts.gen.dart';
 import 'package:tabpay_app/src/routes/app_router.gr.dart';
 import 'package:tabpay_app/tabpay_core/tabpay_core.dart';
+import 'package:tabpay_app/tabpay_core/utils/shared_prefs.dart';
 
 class IntroItem {
   String title, subtitle, image, backgroundImage;
@@ -262,7 +263,7 @@ class InstructionPageState extends State<InstructionPage> {
                                             const Duration(milliseconds: 300),
                                         curve: Curves.linear);
                                   } else {
-                                    // SharedPrefs().isInstructionShow = isChecked;
+                                    SharedPrefs().isIntroSkip = isChecked;
                                     AutoRouter.of(context)
                                         .replace(const LoginMainRoute());
                                   }

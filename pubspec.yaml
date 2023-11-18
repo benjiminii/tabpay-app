@@ -47,6 +47,7 @@ dependencies:
   smooth_page_indicator: ^1.0.0+2
   freezed: ^2.4.5
   flutter_bloc: ^8.0.1
+  local_auth: ^1.1.10
 
 dev_dependencies:
   flutter_test:
