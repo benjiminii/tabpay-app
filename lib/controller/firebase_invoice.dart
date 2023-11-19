@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-Future<String> createInvoice(int amount) async {
+Future<String> createUserInvoice(int amount) async {
   User? user = FirebaseAuth.instance.currentUser;
   if (user != null) {
     try {

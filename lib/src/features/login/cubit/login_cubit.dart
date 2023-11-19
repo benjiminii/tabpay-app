@@ -103,7 +103,10 @@ class LoginCubit extends Cubit<LoginState> {
             context: context,
             title: "Unsuccessful",
             desc: "Sorry, Your Pin code mismatch.",
-            btnText: "Close");
+            btnText: "Close",
+            onTap: () {
+              context.router.pop();
+            });
       }
     }
   }

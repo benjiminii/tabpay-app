@@ -3,8 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 // ignore: depend_on_referenced_packages
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:tabpay_app/controller/firebase_invoice.dart';
+import 'package:tabpay_app/tabpay_core/common/widgets/dialog_pin.dart';
 import 'package:tabpay_app/tabpay_core/models/home_repository/_responses.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:nfc_manager/nfc_manager.dart';
+import 'package:nfc_manager/platform_tags.dart';
+import 'package:flutter_nfc_hce/flutter_nfc_hce.dart';
 
 // Freezed part files
 part 'home_cubit.freezed.dart';
@@ -14,6 +18,8 @@ part 'home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
   HomeCubit() : super(HomeState.initial());
+  ValueNotifier<dynamic> result = ValueNotifier(null);
+  final flutterNfcHcePlugin = FlutterNfcHce();
 
   Future<void> initTransactions({required BuildContext context}) async {
     List<TransactionModel> transasctions = [];
@@ -116,11 +122,24 @@ class HomeCubit extends Cubit<HomeState> {
     emit(state.copyWith(currentState: BottomSectionState.isDefault));
   }
 
-  Future<void> tagRead(
+  // Future<void> tagRead(
+  //     {required BuildContext context,
+  //     required int amount,
+  //     required bool isInvoice}) async {
+  // emit(state.copyWith(currentState: BottomSectionState.isScanning));
+
+  //   await context.router.pop();
+  //   await Future.delayed(const Duration(seconds: 2));
+  //   await waitForScan(amount: amount, isInvoice: isInvoice);
+  // }
+
+  Future<void> checkInvoiceStatus() async {}
+
+  Future<void> createInvoice(
       {required BuildContext context,
       required int amount,
       required bool isInvoice}) async {
-    String invoiceId = await createInvoice(amount);
+    String invoiceId = await createUserInvoice(amount);
     print('invoiceId: $invoiceId');
     Map<String, dynamic>? sda = await getInvoiceById(invoiceId);
     print(sda);
@@ -128,5 +147,61 @@ class HomeCubit extends Cubit<HomeState> {
     // await context.router.pop();
     // await Future.delayed(const Duration(seconds: 2));
     // await waitForScan(amount: amount, isInvoice: isInvoice);
+    if (isInvoice) {
+      //TODO: Creating invoice to Me
+    } else {
+      //TODO: Creating invoice from Me
+    }
+    createNfcWithInvoiceId(context: context, invoiceId: amount.toString());
+  }
+
+  Future<void> getInvoiceWithInvoiceId(
+      {required BuildContext context, required String invoiceId}) async {
+    //TODO: Get invoice with Invoice id
+    dialogConfirmPin(context, "amount", "name", "cardID", (pinCode) {
+      doTransaction(context: context);
+    });
+  }
+
+  Future<void> doTransaction({required BuildContext context}) async {}
+
+  void createNfcWithInvoiceId(
+      {required BuildContext context, required String invoiceId}) async {
+    // context.router.pop();
+    emit(state.copyWith(currentState: BottomSectionState.isScanning));
+
+    var content = invoiceId;
+    var result = await flutterNfcHcePlugin.startNfcHce(content);
+    // if (result != null) {
+    //   emit(state.copyWith(currentState: BottomSectionState.isWaiting));
+    // }
+  }
+
+  void getNfcRelatedInfo() async {
+    String platformVersion =
+        await flutterNfcHcePlugin.getPlatformVersion() ?? "";
+    bool isNfcHceSupported = await flutterNfcHcePlugin.isNfcHceSupported();
+    bool isSecureNfcEnabled = await flutterNfcHcePlugin.isSecureNfcEnabled();
+    bool isNfcEnabled = await flutterNfcHcePlugin.isNfcEnabled();
+    emit(state.copyWith(
+        platformVersion: platformVersion,
+        isNfcHceSupported: isNfcHceSupported,
+        isSecureNfcEnabled: isSecureNfcEnabled,
+        isNfcEnabled: isNfcEnabled));
+  }
+
+  void getInvoiceIdFromNfc({required BuildContext context}) {
+    NfcManager.instance.startSession(onDiscovered: (NfcTag tag) async {
+      result.value = tag.data;
+      if (tag.data["ndef"] != null &&
+          tag.data["ndef"]["cachedMessage"] != null &&
+          tag.data["ndef"]["cachedMessage"]["records"][0] != null &&
+          tag.data["ndef"]["cachedMessage"]["records"][0]["payload"] != null) {
+        var payload =
+            tag.data["ndef"]["cachedMessage"]["records"][0]["payload"];
+        String invoiceId = String.fromCharCodes(payload).substring(3);
+        getInvoiceWithInvoiceId(context: context, invoiceId: invoiceId);
+      }
+    });
   }
 }
