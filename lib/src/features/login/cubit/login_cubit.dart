@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 // ignore: depend_on_referenced_packages
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:tabpay_app/controller/firebase_account.dart';
 import 'package:tabpay_app/controller/firebase_auth.dart';
 import 'package:tabpay_app/src/routes/app_router.gr.dart';
 import 'package:tabpay_app/tabpay_core/common/widgets/dialog_failed.dart';
@@ -50,9 +53,10 @@ class LoginCubit extends Cubit<LoginState> {
   // OTP uusgeh logic
   Future<void> generateOtp(
       {required BuildContext context, required String phoneNumber}) async {
-    verifyPhoneNumber(phoneNumber, (verificationId) {
+    await verifyPhoneNumber(phoneNumber, (verificationId) {
       emit(state.copyWith(
           phoneNumber: phoneNumber, verificationId: verificationId));
+
       navToOtpPage(context: context);
     });
   }
@@ -60,15 +64,9 @@ class LoginCubit extends Cubit<LoginState> {
   // OTP-g shalgah logic
   Future<void> verifyOtp(
       {required BuildContext context, required String otpCode}) async {
-    // TODO: OTP code amjilttai bol
-
     try {
-      PhoneAuthCredential credential = PhoneAuthProvider.credential(
-        verificationId: state.verificationId,
-        smsCode: otpCode,
-      );
+      await authOTP(state.verificationId, otpCode, context);
 
-      await auth.signInWithCredential(credential);
       checkTransactionPin(context: context);
     } catch (err) {
       dialogAlertFailed(
@@ -82,11 +80,14 @@ class LoginCubit extends Cubit<LoginState> {
   // OTP-g shalgah logic
   Future<void> checkTransactionPin({required BuildContext context}) async {
     // TODO: API (transaction pin code uusgesen baival)
-    if (false) {
-      navToMainPage(context: context);
-    } else {
-      navToCreatePinPage(context: context);
-    }
+    Map<String, dynamic>? account = await getAccount();
+    print('account');
+    print(account);
+    // if (account?.pinCode != null) {
+    //   navToMainPage(context: context);
+    // } else {
+    //   navToCreatePinPage(context: context);
+    // }
   }
 
   // Pin uusgeh huudasnii logic

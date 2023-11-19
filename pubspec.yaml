@@ -47,6 +47,9 @@ dependencies:
   smooth_page_indicator: ^1.0.0+2
   freezed: ^2.4.5
   flutter_bloc: ^8.0.1
+  nfc_host_card_emulation: ^1.1.0
+  nfc_manager: ^3.3.0
+  flutter_nfc_kit: ^3.4.1
 
 dev_dependencies:
   flutter_test:
