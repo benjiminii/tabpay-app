@@ -2,26 +2,21 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-Future<String> createUserInvoice(int amount) async {
+Future<String> createUserInvoice(int amount, type) async {
   User? user = FirebaseAuth.instance.currentUser;
-  if (user != null) {
-    try {
-      Map<String, dynamic> myInvoice = {
-        'userId': user.uid,
-        'amount': amount,
-        'date': DateTime.now(),
-        'type': "give",
-        'isComplete': false,
-      };
-      DocumentReference invoiceRef =
-          await FirebaseFirestore.instance.collection('invoice').add(myInvoice);
-      return invoiceRef.id;
-    } catch (e) {
-      print('Error inserting invoice into Firestore: $e');
-      return '';
-    }
-  } else {
-    print('User is not logged in');
+  try {
+    Map<String, dynamic> myInvoice = {
+      'userId': user?.uid,
+      'amount': amount,
+      'date': DateTime.now(),
+      'type': type,
+      'isComplete': false,
+    };
+    DocumentReference invoiceRef =
+        await FirebaseFirestore.instance.collection('invoice').add(myInvoice);
+    return invoiceRef.id;
+  } catch (e) {
+    print('Error inserting invoice into Firestore: $e');
     return '';
   }
 }
@@ -45,6 +40,14 @@ Future<Map<String, dynamic>?> getInvoiceById(String invoiceId) async {
     print('Error inserting invoice into Firestore: $e');
   }
   return null;
+}
+
+Future<bool> setUserInvoiceComplete(String invoiceId) async {
+  await FirebaseFirestore.instance
+      .collection('account')
+      .doc(invoiceId)
+      .update({'isComplete': true});
+  return true;
 }
 
 Future<List<Map<String, dynamic>>> getUserInvoices() async {

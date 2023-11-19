@@ -162,7 +162,7 @@ class SuccessfulWidget extends StatelessWidget {
                     buttonTextColor: Colors.white,
                     buttonLabel: "End",
                     onTap: () {
-                      context.read<HomeCubit>().finishTransaction();
+                      context.read<HomeCubit>().finishTransaction(context);
                     }),
               ),
             ],
@@ -203,7 +203,7 @@ class FailedWidget extends StatelessWidget {
                     buttonTextColor: Colors.white,
                     buttonLabel: "End",
                     onTap: () {
-                      context.read<HomeCubit>().finishTransaction();
+                      context.read<HomeCubit>().finishTransaction(context);
                     }),
               ),
             ],
@@ -244,7 +244,7 @@ class ScanningWidget extends StatelessWidget {
                     buttonTextColor: Colors.black,
                     buttonLabel: "Cancel",
                     onTap: () {
-                      context.read<HomeCubit>().finishTransaction();
+                      context.read<HomeCubit>().finishTransaction(context);
                     }),
               ),
             ],

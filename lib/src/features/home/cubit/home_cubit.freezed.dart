@@ -29,6 +29,7 @@ mixin _$HomeState {
   bool get isSecureNfcEnabled => throw _privateConstructorUsedError;
   bool get isNfcHceSupported => throw _privateConstructorUsedError;
   String get platformVersion => throw _privateConstructorUsedError;
+  String get waitingInvoiceId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -49,7 +50,8 @@ abstract class $HomeStateCopyWith<$Res> {
       bool isNfcEnabled,
       bool isSecureNfcEnabled,
       bool isNfcHceSupported,
-      String platformVersion});
+      String platformVersion,
+      String waitingInvoiceId});
 
   $UserModelCopyWith<$Res> get userLogged;
 }
@@ -75,6 +77,7 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
     Object? isSecureNfcEnabled = null,
     Object? isNfcHceSupported = null,
     Object? platformVersion = null,
+    Object? waitingInvoiceId = null,
   }) {
     return _then(_value.copyWith(
       loading: null == loading
@@ -109,6 +112,10 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
           ? _value.platformVersion
           : platformVersion // ignore: cast_nullable_to_non_nullable
               as String,
+      waitingInvoiceId: null == waitingInvoiceId
+          ? _value.waitingInvoiceId
+          : waitingInvoiceId // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 
@@ -137,7 +144,8 @@ abstract class _$$HomeStateImplCopyWith<$Res>
       bool isNfcEnabled,
       bool isSecureNfcEnabled,
       bool isNfcHceSupported,
-      String platformVersion});
+      String platformVersion,
+      String waitingInvoiceId});
 
   @override
   $UserModelCopyWith<$Res> get userLogged;
@@ -162,6 +170,7 @@ class __$$HomeStateImplCopyWithImpl<$Res>
     Object? isSecureNfcEnabled = null,
     Object? isNfcHceSupported = null,
     Object? platformVersion = null,
+    Object? waitingInvoiceId = null,
   }) {
     return _then(_$HomeStateImpl(
       loading: null == loading
@@ -196,6 +205,10 @@ class __$$HomeStateImplCopyWithImpl<$Res>
           ? _value.platformVersion
           : platformVersion // ignore: cast_nullable_to_non_nullable
               as String,
+      waitingInvoiceId: null == waitingInvoiceId
+          ? _value.waitingInvoiceId
+          : waitingInvoiceId // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -211,7 +224,8 @@ class _$HomeStateImpl extends _HomeState {
       this.isNfcEnabled = false,
       this.isSecureNfcEnabled = false,
       this.isNfcHceSupported = false,
-      this.platformVersion = ""})
+      this.platformVersion = "",
+      this.waitingInvoiceId = ""})
       : _transactionList = transactionList,
         super._();
 
@@ -248,10 +262,13 @@ class _$HomeStateImpl extends _HomeState {
   @override
   @JsonKey()
   final String platformVersion;
+  @override
+  @JsonKey()
+  final String waitingInvoiceId;
 
   @override
   String toString() {
-    return 'HomeState(loading: $loading, transactionList: $transactionList, userLogged: $userLogged, currentState: $currentState, isNfcEnabled: $isNfcEnabled, isSecureNfcEnabled: $isSecureNfcEnabled, isNfcHceSupported: $isNfcHceSupported, platformVersion: $platformVersion)';
+    return 'HomeState(loading: $loading, transactionList: $transactionList, userLogged: $userLogged, currentState: $currentState, isNfcEnabled: $isNfcEnabled, isSecureNfcEnabled: $isSecureNfcEnabled, isNfcHceSupported: $isNfcHceSupported, platformVersion: $platformVersion, waitingInvoiceId: $waitingInvoiceId)';
   }
 
   @override
@@ -273,7 +290,9 @@ class _$HomeStateImpl extends _HomeState {
             (identical(other.isNfcHceSupported, isNfcHceSupported) ||
                 other.isNfcHceSupported == isNfcHceSupported) &&
             (identical(other.platformVersion, platformVersion) ||
-                other.platformVersion == platformVersion));
+                other.platformVersion == platformVersion) &&
+            (identical(other.waitingInvoiceId, waitingInvoiceId) ||
+                other.waitingInvoiceId == waitingInvoiceId));
   }
 
   @JsonKey(ignore: true)
@@ -287,7 +306,8 @@ class _$HomeStateImpl extends _HomeState {
       isNfcEnabled,
       isSecureNfcEnabled,
       isNfcHceSupported,
-      platformVersion);
+      platformVersion,
+      waitingInvoiceId);
 
   @JsonKey(ignore: true)
   @override
@@ -312,7 +332,8 @@ abstract class _HomeState extends HomeState {
       final bool isNfcEnabled,
       final bool isSecureNfcEnabled,
       final bool isNfcHceSupported,
-      final String platformVersion}) = _$HomeStateImpl;
+      final String platformVersion,
+      final String waitingInvoiceId}) = _$HomeStateImpl;
   const _HomeState._() : super._();
 
   factory _HomeState.fromJson(Map<String, dynamic> json) =
@@ -334,6 +355,8 @@ abstract class _HomeState extends HomeState {
   bool get isNfcHceSupported;
   @override
   String get platformVersion;
+  @override
+  String get waitingInvoiceId;
   @override
   @JsonKey(ignore: true)
   _$$HomeStateImplCopyWith<_$HomeStateImpl> get copyWith =>

@@ -19,6 +19,7 @@ class HomeMainPage extends StatefulWidget {
 class HomeMainPageState extends State<HomeMainPage> {
   @override
   void initState() {
+    context.read<HomeCubit>().getInvoiceIdFromNfc(context: context);
     context.read<HomeCubit>().getNfcRelatedInfo();
     context.read<HomeCubit>().initUser(context: context);
     context.read<HomeCubit>().initTransactions(context: context);

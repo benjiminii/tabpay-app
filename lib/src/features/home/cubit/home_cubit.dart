@@ -9,6 +9,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:nfc_manager/nfc_manager.dart';
 import 'package:nfc_manager/platform_tags.dart';
 import 'package:flutter_nfc_hce/flutter_nfc_hce.dart';
+import 'dart:convert';
 
 // Freezed part files
 part 'home_cubit.freezed.dart';
@@ -118,8 +119,9 @@ class HomeCubit extends Cubit<HomeState> {
     }
   }
 
-  Future<void> finishTransaction() async {
+  Future<void> finishTransaction(BuildContext context) async {
     emit(state.copyWith(currentState: BottomSectionState.isDefault));
+    getInvoiceIdFromNfc(context: context);
   }
 
   // Future<void> tagRead(
@@ -133,32 +135,36 @@ class HomeCubit extends Cubit<HomeState> {
   //   await waitForScan(amount: amount, isInvoice: isInvoice);
   // }
 
-  Future<void> checkInvoiceStatus() async {}
+  Future<void> checkInvoiceStatus() async {
+    Map<String, dynamic>? invoiceItem =
+        await getInvoiceById(state.waitingInvoiceId);
+    print('invoiceItem');
+    // var item = jsonEncode(invoiceItem);
+    print(invoiceItem?["amount"]);
+    if (invoiceItem!["isComplete"]) {
+      emit(state.copyWith(currentState: BottomSectionState.isSuccessful));
+    }
+  }
 
   Future<void> createInvoice(
       {required BuildContext context,
       required int amount,
       required bool isInvoice}) async {
-    String invoiceId = await createUserInvoice(amount);
-    print('invoiceId: $invoiceId');
-    Map<String, dynamic>? sda = await getInvoiceById(invoiceId);
-    print(sda);
-    // emit(state.copyWith(currentState: BottomSectionState.isScanning));
-    // await context.router.pop();
-    // await Future.delayed(const Duration(seconds: 2));
-    // await waitForScan(amount: amount, isInvoice: isInvoice);
-    if (isInvoice) {
-      //TODO: Creating invoice to Me
-    } else {
-      //TODO: Creating invoice from Me
-    }
-    createNfcWithInvoiceId(context: context, invoiceId: amount.toString());
+    String invoiceId =
+        await createUserInvoice(amount, isInvoice ? "take" : "give");
+    NfcManager.instance.stopSession();
+
+    createNfcWithInvoiceId(
+        context: context, invoiceId: invoiceId, isInvoice: isInvoice);
+    emit(state.copyWith(waitingInvoiceId: invoiceId));
   }
 
   Future<void> getInvoiceWithInvoiceId(
       {required BuildContext context, required String invoiceId}) async {
-    //TODO: Get invoice with Invoice id
-    dialogConfirmPin(context, "amount", "name", "cardID", (pinCode) {
+    Map<String, dynamic>? invoiceItem = await getInvoiceById(invoiceId);
+    dialogConfirmPin(
+        context, invoiceItem!["amount"].toString(), "Temuulen", "5076 888 210",
+        (pinCode) {
       doTransaction(context: context);
     });
   }
@@ -166,15 +172,14 @@ class HomeCubit extends Cubit<HomeState> {
   Future<void> doTransaction({required BuildContext context}) async {}
 
   void createNfcWithInvoiceId(
-      {required BuildContext context, required String invoiceId}) async {
-    // context.router.pop();
+      {required BuildContext context,
+      required String invoiceId,
+      required isInvoice}) async {
+    context.router.pop();
     emit(state.copyWith(currentState: BottomSectionState.isScanning));
 
     var content = invoiceId;
     var result = await flutterNfcHcePlugin.startNfcHce(content);
-    // if (result != null) {
-    //   emit(state.copyWith(currentState: BottomSectionState.isWaiting));
-    // }
   }
 
   void getNfcRelatedInfo() async {

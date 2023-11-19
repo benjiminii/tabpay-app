@@ -19,7 +19,8 @@ class HomeState with _$HomeState {
       @Default(false) bool isNfcEnabled,
       @Default(false) bool isSecureNfcEnabled,
       @Default(false) bool isNfcHceSupported,
-      @Default("") String platformVersion}) = _HomeState;
+      @Default("") String platformVersion,
+      @Default("") String waitingInvoiceId}) = _HomeState;
 
   factory HomeState.initial() => const HomeState();
 

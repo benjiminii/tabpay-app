@@ -23,6 +23,7 @@ _$HomeStateImpl _$$HomeStateImplFromJson(Map<String, dynamic> json) =>
       isSecureNfcEnabled: json['isSecureNfcEnabled'] as bool? ?? false,
       isNfcHceSupported: json['isNfcHceSupported'] as bool? ?? false,
       platformVersion: json['platformVersion'] as String? ?? "",
+      waitingInvoiceId: json['waitingInvoiceId'] as String? ?? "",
     );
 
 Map<String, dynamic> _$$HomeStateImplToJson(_$HomeStateImpl instance) =>
@@ -35,6 +36,7 @@ Map<String, dynamic> _$$HomeStateImplToJson(_$HomeStateImpl instance) =>
       'isSecureNfcEnabled': instance.isSecureNfcEnabled,
       'isNfcHceSupported': instance.isNfcHceSupported,
       'platformVersion': instance.platformVersion,
+      'waitingInvoiceId': instance.waitingInvoiceId,
     };
 
 const _$BottomSectionStateEnumMap = {
