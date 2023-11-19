@@ -48,6 +48,8 @@ dependencies:
   freezed: ^2.4.5
   flutter_bloc: ^8.0.1
   local_auth: ^1.1.10
+  flutter_nfc_hce: ^0.1.7
+  nfc_manager: ^3.3.0
 
 dev_dependencies:
   flutter_test:

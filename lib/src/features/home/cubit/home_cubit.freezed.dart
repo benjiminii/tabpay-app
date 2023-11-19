@@ -25,6 +25,10 @@ mixin _$HomeState {
       throw _privateConstructorUsedError;
   UserModel get userLogged => throw _privateConstructorUsedError;
   BottomSectionState get currentState => throw _privateConstructorUsedError;
+  bool get isNfcEnabled => throw _privateConstructorUsedError;
+  bool get isSecureNfcEnabled => throw _privateConstructorUsedError;
+  bool get isNfcHceSupported => throw _privateConstructorUsedError;
+  String get platformVersion => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -41,7 +45,11 @@ abstract class $HomeStateCopyWith<$Res> {
       {bool loading,
       List<TransactionModel> transactionList,
       UserModel userLogged,
-      BottomSectionState currentState});
+      BottomSectionState currentState,
+      bool isNfcEnabled,
+      bool isSecureNfcEnabled,
+      bool isNfcHceSupported,
+      String platformVersion});
 
   $UserModelCopyWith<$Res> get userLogged;
 }
@@ -63,6 +71,10 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
     Object? transactionList = null,
     Object? userLogged = null,
     Object? currentState = null,
+    Object? isNfcEnabled = null,
+    Object? isSecureNfcEnabled = null,
+    Object? isNfcHceSupported = null,
+    Object? platformVersion = null,
   }) {
     return _then(_value.copyWith(
       loading: null == loading
@@ -81,6 +93,22 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
           ? _value.currentState
           : currentState // ignore: cast_nullable_to_non_nullable
               as BottomSectionState,
+      isNfcEnabled: null == isNfcEnabled
+          ? _value.isNfcEnabled
+          : isNfcEnabled // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isSecureNfcEnabled: null == isSecureNfcEnabled
+          ? _value.isSecureNfcEnabled
+          : isSecureNfcEnabled // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isNfcHceSupported: null == isNfcHceSupported
+          ? _value.isNfcHceSupported
+          : isNfcHceSupported // ignore: cast_nullable_to_non_nullable
+              as bool,
+      platformVersion: null == platformVersion
+          ? _value.platformVersion
+          : platformVersion // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 
@@ -105,7 +133,11 @@ abstract class _$$HomeStateImplCopyWith<$Res>
       {bool loading,
       List<TransactionModel> transactionList,
       UserModel userLogged,
-      BottomSectionState currentState});
+      BottomSectionState currentState,
+      bool isNfcEnabled,
+      bool isSecureNfcEnabled,
+      bool isNfcHceSupported,
+      String platformVersion});
 
   @override
   $UserModelCopyWith<$Res> get userLogged;
@@ -126,6 +158,10 @@ class __$$HomeStateImplCopyWithImpl<$Res>
     Object? transactionList = null,
     Object? userLogged = null,
     Object? currentState = null,
+    Object? isNfcEnabled = null,
+    Object? isSecureNfcEnabled = null,
+    Object? isNfcHceSupported = null,
+    Object? platformVersion = null,
   }) {
     return _then(_$HomeStateImpl(
       loading: null == loading
@@ -144,6 +180,22 @@ class __$$HomeStateImplCopyWithImpl<$Res>
           ? _value.currentState
           : currentState // ignore: cast_nullable_to_non_nullable
               as BottomSectionState,
+      isNfcEnabled: null == isNfcEnabled
+          ? _value.isNfcEnabled
+          : isNfcEnabled // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isSecureNfcEnabled: null == isSecureNfcEnabled
+          ? _value.isSecureNfcEnabled
+          : isSecureNfcEnabled // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isNfcHceSupported: null == isNfcHceSupported
+          ? _value.isNfcHceSupported
+          : isNfcHceSupported // ignore: cast_nullable_to_non_nullable
+              as bool,
+      platformVersion: null == platformVersion
+          ? _value.platformVersion
+          : platformVersion // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -155,7 +207,11 @@ class _$HomeStateImpl extends _HomeState {
       {this.loading = false,
       final List<TransactionModel> transactionList = const [],
       this.userLogged = const UserModel(),
-      this.currentState = BottomSectionState.isDefault})
+      this.currentState = BottomSectionState.isDefault,
+      this.isNfcEnabled = false,
+      this.isSecureNfcEnabled = false,
+      this.isNfcHceSupported = false,
+      this.platformVersion = ""})
       : _transactionList = transactionList,
         super._();
 
@@ -180,10 +236,22 @@ class _$HomeStateImpl extends _HomeState {
   @override
   @JsonKey()
   final BottomSectionState currentState;
+  @override
+  @JsonKey()
+  final bool isNfcEnabled;
+  @override
+  @JsonKey()
+  final bool isSecureNfcEnabled;
+  @override
+  @JsonKey()
+  final bool isNfcHceSupported;
+  @override
+  @JsonKey()
+  final String platformVersion;
 
   @override
   String toString() {
-    return 'HomeState(loading: $loading, transactionList: $transactionList, userLogged: $userLogged, currentState: $currentState)';
+    return 'HomeState(loading: $loading, transactionList: $transactionList, userLogged: $userLogged, currentState: $currentState, isNfcEnabled: $isNfcEnabled, isSecureNfcEnabled: $isSecureNfcEnabled, isNfcHceSupported: $isNfcHceSupported, platformVersion: $platformVersion)';
   }
 
   @override
@@ -197,7 +265,15 @@ class _$HomeStateImpl extends _HomeState {
             (identical(other.userLogged, userLogged) ||
                 other.userLogged == userLogged) &&
             (identical(other.currentState, currentState) ||
-                other.currentState == currentState));
+                other.currentState == currentState) &&
+            (identical(other.isNfcEnabled, isNfcEnabled) ||
+                other.isNfcEnabled == isNfcEnabled) &&
+            (identical(other.isSecureNfcEnabled, isSecureNfcEnabled) ||
+                other.isSecureNfcEnabled == isSecureNfcEnabled) &&
+            (identical(other.isNfcHceSupported, isNfcHceSupported) ||
+                other.isNfcHceSupported == isNfcHceSupported) &&
+            (identical(other.platformVersion, platformVersion) ||
+                other.platformVersion == platformVersion));
   }
 
   @JsonKey(ignore: true)
@@ -207,7 +283,11 @@ class _$HomeStateImpl extends _HomeState {
       loading,
       const DeepCollectionEquality().hash(_transactionList),
       userLogged,
-      currentState);
+      currentState,
+      isNfcEnabled,
+      isSecureNfcEnabled,
+      isNfcHceSupported,
+      platformVersion);
 
   @JsonKey(ignore: true)
   @override
@@ -228,7 +308,11 @@ abstract class _HomeState extends HomeState {
       {final bool loading,
       final List<TransactionModel> transactionList,
       final UserModel userLogged,
-      final BottomSectionState currentState}) = _$HomeStateImpl;
+      final BottomSectionState currentState,
+      final bool isNfcEnabled,
+      final bool isSecureNfcEnabled,
+      final bool isNfcHceSupported,
+      final String platformVersion}) = _$HomeStateImpl;
   const _HomeState._() : super._();
 
   factory _HomeState.fromJson(Map<String, dynamic> json) =
@@ -242,6 +326,14 @@ abstract class _HomeState extends HomeState {
   UserModel get userLogged;
   @override
   BottomSectionState get currentState;
+  @override
+  bool get isNfcEnabled;
+  @override
+  bool get isSecureNfcEnabled;
+  @override
+  bool get isNfcHceSupported;
+  @override
+  String get platformVersion;
   @override
   @JsonKey(ignore: true)
   _$$HomeStateImplCopyWith<_$HomeStateImpl> get copyWith =>

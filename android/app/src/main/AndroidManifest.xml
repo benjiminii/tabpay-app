@@ -1,9 +1,24 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <uses-permission android:name="android.permission.NFC" />
+    <uses-feature android:name="android.hardware.nfc" android:required="true" />
+    <uses-feature android:name="android.hardware.nfc.hce" android:required="true" />
+    <uses-permission android:name="android.permission.VIBRATE" />
     <application
         android:label="tabpay_app"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        <service android:name="com.novice.flutter_nfc_hce.KHostApduService"
+                    android:exported="true"
+                    android:enabled="true"
+                    android:permission="android.permission.BIND_NFC_SERVICE">
+            <intent-filter>
+                <action android:name="android.nfc.cardemulation.action.HOST_APDU_SERVICE"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        <meta-data android:name="android.nfc.cardemulation.host_apdu_service"
+                    android:resource="@xml/apduservice"/>
+        </service>
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

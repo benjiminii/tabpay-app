@@ -19,6 +19,10 @@ _$HomeStateImpl _$$HomeStateImplFromJson(Map<String, dynamic> json) =>
       currentState: $enumDecodeNullable(
               _$BottomSectionStateEnumMap, json['currentState']) ??
           BottomSectionState.isDefault,
+      isNfcEnabled: json['isNfcEnabled'] as bool? ?? false,
+      isSecureNfcEnabled: json['isSecureNfcEnabled'] as bool? ?? false,
+      isNfcHceSupported: json['isNfcHceSupported'] as bool? ?? false,
+      platformVersion: json['platformVersion'] as String? ?? "",
     );
 
 Map<String, dynamic> _$$HomeStateImplToJson(_$HomeStateImpl instance) =>
@@ -27,10 +31,15 @@ Map<String, dynamic> _$$HomeStateImplToJson(_$HomeStateImpl instance) =>
       'transactionList': instance.transactionList,
       'userLogged': instance.userLogged,
       'currentState': _$BottomSectionStateEnumMap[instance.currentState]!,
+      'isNfcEnabled': instance.isNfcEnabled,
+      'isSecureNfcEnabled': instance.isSecureNfcEnabled,
+      'isNfcHceSupported': instance.isNfcHceSupported,
+      'platformVersion': instance.platformVersion,
     };
 
 const _$BottomSectionStateEnumMap = {
   BottomSectionState.isScanning: 'isScanning',
+  BottomSectionState.isWaiting: 'isWaiting',
   BottomSectionState.isSuccessful: 'isSuccessful',
   BottomSectionState.isFailed: 'isFailed',
   BottomSectionState.isDefault: 'isDefault',

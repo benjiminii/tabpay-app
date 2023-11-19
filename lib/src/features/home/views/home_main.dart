@@ -19,6 +19,7 @@ class HomeMainPage extends StatefulWidget {
 class HomeMainPageState extends State<HomeMainPage> {
   @override
   void initState() {
+    context.read<HomeCubit>().getNfcRelatedInfo();
     context.read<HomeCubit>().initUser(context: context);
     context.read<HomeCubit>().initTransactions(context: context);
     super.initState();
@@ -92,13 +93,13 @@ class HomeMainPageState extends State<HomeMainPage> {
                           onTap: () {
                             context.router.push(NumpadRoute(
                                 onTap: (amount) {
-                                  context.read<HomeCubit>().tagRead(
+                                  context.read<HomeCubit>().createInvoice(
                                       context: context,
                                       amount: amount,
                                       isInvoice: false);
                                 },
                                 onTap2: (amount) {
-                                  context.read<HomeCubit>().tagRead(
+                                  context.read<HomeCubit>().createInvoice(
                                       context: context,
                                       amount: amount,
                                       isInvoice: true);
