@@ -1,15 +1,22 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 // ignore: depend_on_referenced_packages
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:tabpay_app/controller/firebase_account.dart';
 import 'package:tabpay_app/controller/firebase_invoice.dart';
+import 'package:tabpay_app/controller/firebase_transaction.dart';
+import 'package:tabpay_app/tabpay_core/common/widgets/dialog_failed.dart';
 import 'package:tabpay_app/tabpay_core/common/widgets/dialog_pin.dart';
+import 'package:tabpay_app/tabpay_core/common/widgets/dialog_success.dart';
 import 'package:tabpay_app/tabpay_core/models/home_repository/_responses.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:nfc_manager/nfc_manager.dart';
 import 'package:nfc_manager/platform_tags.dart';
 import 'package:flutter_nfc_hce/flutter_nfc_hce.dart';
 import 'dart:convert';
+import 'package:firebase_auth/firebase_auth.dart';
 
 // Freezed part files
 part 'home_cubit.freezed.dart';
@@ -22,166 +29,134 @@ class HomeCubit extends Cubit<HomeState> {
   ValueNotifier<dynamic> result = ValueNotifier(null);
   final flutterNfcHcePlugin = FlutterNfcHce();
 
-  Future<void> initTransactions({required BuildContext context}) async {
-    List<TransactionModel> transasctions = [];
-    TransactionModel transaction1 = const TransactionModel(
-        id: 0,
-        createdDate: "2023.10.28",
-        transactionAmount: 150000,
-        remainingBalance: 150000,
-        description: "Income",
-        isIncome: true);
-    TransactionModel transaction2 = const TransactionModel(
-        id: 1,
-        createdDate: "2023.10.29",
-        transactionAmount: 100000,
-        remainingBalance: 250000,
-        description: "Income",
-        isIncome: true);
-    TransactionModel transaction3 = const TransactionModel(
-        id: 1,
-        createdDate: "2023.10.29",
-        transactionAmount: 50000,
-        remainingBalance: 200000,
-        description: "Outcome",
-        isIncome: false);
-    transasctions.insert(0, transaction3);
-    transasctions.insert(1, transaction2);
-    transasctions.insert(2, transaction1);
-
-    emit(state.copyWith(transactionList: transasctions));
+  // Brute arga
+  reoccuringBrute() {
+    Timer.periodic(const Duration(seconds: 2), (timer) {
+      if (state.currentState != BottomSectionState.isScanning) {
+        debugPrint("Invoicer stopped checking status");
+        timer.cancel();
+      } else {
+        debugPrint("Invoicer should check status");
+        checkInvoiceStatus();
+      }
+    });
   }
 
-  Future<void> initUser({required BuildContext context}) async {
-    UserModel user = const UserModel(
-        id: 0,
-        createdDate: "2023.10.25",
-        remainingBalance: 200000,
-        accountNo: "**** **** **** 1555");
-    emit(state.copyWith(userLogged: user));
-  }
-
-  Future<void> sendInvoice({required int invoiceAmount}) async {
-    UserModel temp = UserModel(
-        id: state.userLogged.id,
-        createdDate: state.userLogged.createdDate,
-        remainingBalance: state.userLogged.remainingBalance + invoiceAmount,
-        accountNo: state.userLogged.accountNo);
-    TransactionModel transferTransaction = TransactionModel(
-        id: 1,
-        createdDate: "2023.11.09",
-        transactionAmount: invoiceAmount,
-        remainingBalance: temp.remainingBalance,
-        description: "Income",
-        isIncome: true);
-    List<TransactionModel> transactions = [];
-    transactions = [transferTransaction, ...state.transactionList];
-    for (var item in state.transactionList) {
-      transactions.add(item);
-    }
-    emit(state.copyWith(
-        userLogged: temp,
-        currentState: BottomSectionState.isSuccessful,
-        transactionList: transactions));
-  }
-
-  Future<void> getTransfer({required int transferAmount}) async {
-    if (state.userLogged.remainingBalance >= transferAmount) {
-      UserModel temp = UserModel(
-          id: state.userLogged.id,
-          createdDate: state.userLogged.createdDate,
-          remainingBalance: state.userLogged.remainingBalance - transferAmount,
-          accountNo: state.userLogged.accountNo);
-      TransactionModel transferTransaction = TransactionModel(
-          id: 1,
-          createdDate: "2023.11.09",
-          transactionAmount: transferAmount,
-          remainingBalance: temp.remainingBalance,
-          description: "Outcome",
-          isIncome: false);
-      List<TransactionModel> transactions = [];
-      transactions = [transferTransaction, ...state.transactionList];
-      emit(state.copyWith(
-          userLogged: temp,
-          currentState: BottomSectionState.isSuccessful,
-          transactionList: transactions));
-    } else {
-      emit(state.copyWith(currentState: BottomSectionState.isFailed));
-    }
-  }
-
-  Future<void> waitForScan(
-      {required int amount, required bool isInvoice}) async {
-    if (isInvoice) {
-      await sendInvoice(invoiceAmount: amount);
-    } else {
-      await getTransfer(transferAmount: amount);
-    }
-  }
-
+  // Nfc unshih tolovt oruulna
   Future<void> finishTransaction(BuildContext context) async {
+    debugPrint("Re-Enabling NFC polling");
     emit(state.copyWith(currentState: BottomSectionState.isDefault));
     getInvoiceIdFromNfc(context: context);
   }
 
-  // Future<void> tagRead(
-  //     {required BuildContext context,
-  //     required int amount,
-  //     required bool isInvoice}) async {
-  // emit(state.copyWith(currentState: BottomSectionState.isScanning));
+  Future<void> initTransactions() async {
+    List<Map<String, dynamic>> transactions = await getUserTransactions();
+    User? user = FirebaseAuth.instance.currentUser;
+    print("transactions");
+    print(transactions);
+    List<TransactionModel> transasctions = [];
+    for (int i = 0; i < transactions.length; i++) {
+      TransactionModel transaction = TransactionModel(
+        id: i,
+        createdDate: transactions[i]["date"].toDate(),
+        transactionAmount: transactions[i]["amount"],
+        remainingBalance: transactions[i]["type"] == "take"
+            ? (user?.uid == transactions[i]["invoicerId"]
+                ? transactions[i]["remainingBalance"]
+                : transactions[i]["invoiceRemainingBalance"])
+            : (user?.uid == transactions[i]["userId"]
+                ? transactions[i]["invoiceRemainingBalance"]
+                : transactions[i]["remainingBalance"]),
+        description: transactions[i]["type"] == "take" ? "Income" : "Outcome",
+        isIncome: transactions[i]["type"] == "take"
+            ? (user?.uid == transactions[i]["invoicerId"] ? true : false)
+            : (user?.uid == transactions[i]["userId"] ? true : false),
+      );
+      transasctions.insert(i, transaction);
+    }
+    emit(state.copyWith(transactionList: transasctions));
+  }
 
-  //   await context.router.pop();
-  //   await Future.delayed(const Duration(seconds: 2));
-  //   await waitForScan(amount: amount, isInvoice: isInvoice);
-  // }
+  Future<void> initUser() async {
+    Map<String, dynamic>? account = await getAccount();
+    UserModel user = UserModel(
+        id: 0,
+        createdDate: "2023.10.25",
+        remainingBalance: account?['balance'] ?? 0,
+        accountNo: "**** **** **** 1555");
+    emit(state.copyWith(userLogged: user));
+  }
 
+  // Tuhain invoice deer transaction uussen uguig shalgana
   Future<void> checkInvoiceStatus() async {
     Map<String, dynamic>? invoiceItem =
         await getInvoiceById(state.waitingInvoiceId);
-    print('invoiceItem');
-    // var item = jsonEncode(invoiceItem);
-    print(invoiceItem?["amount"]);
+    // debugPrint(invoiceItem?["Invoicer checking status"]);
     if (invoiceItem!["isComplete"]) {
+      debugPrint(invoiceItem["Invoicer checking status: isComplete"]);
       emit(state.copyWith(currentState: BottomSectionState.isSuccessful));
     }
   }
 
-  Future<void> createInvoice(
+  // Invoice uusgeed, HCE tsatsaj ehleh
+  Future<void> createInvoiceAndHCE(
       {required BuildContext context,
       required int amount,
       required bool isInvoice}) async {
-    String invoiceId =
-        await createUserInvoice(amount, isInvoice ? "take" : "give");
-    NfcManager.instance.stopSession();
-
-    createNfcWithInvoiceId(
-        context: context, invoiceId: invoiceId, isInvoice: isInvoice);
-    emit(state.copyWith(waitingInvoiceId: invoiceId));
+    if (isInvoice == false) {
+      dialogConfirmPin(context, amount.toString(), "Bilguun", "5076 807 222",
+          (pinCode) async {
+        Map<String, dynamic>? account = await getAccount();
+        if (account!['pinCode'] == pinCode) {
+          bool isPossible = await checkIfTransactionIsPossible(
+              "give", amount, account['userId']);
+          if (isPossible) {
+            String invoiceId = await createUserInvoice(amount, "give");
+            NfcManager.instance.stopSession();
+            createNfcWithInvoiceId(
+                context: context, invoiceId: invoiceId, isInvoice: isInvoice);
+          } else {
+            dialogAlertFailed(
+                context: context,
+                title: "Unsuccessful",
+                desc: "Insufficent balance",
+                btnText: "Close");
+          }
+        } else {
+          dialogAlertFailed(
+              context: context,
+              title: "Unsuccessful",
+              desc: "Wrong Transaction Pin code",
+              btnText: "Close");
+        }
+      });
+    } else {
+      String invoiceId = await createUserInvoice(amount, 'take');
+      NfcManager.instance.stopSession();
+      createNfcWithInvoiceId(
+          context: context, invoiceId: invoiceId, isInvoice: isInvoice);
+    }
   }
 
-  Future<void> getInvoiceWithInvoiceId(
-      {required BuildContext context, required String invoiceId}) async {
-    Map<String, dynamic>? invoiceItem = await getInvoiceById(invoiceId);
-    dialogConfirmPin(
-        context, invoiceItem!["amount"].toString(), "Temuulen", "5076 888 210",
-        (pinCode) {
-      doTransaction(context: context);
-    });
-  }
-
-  Future<void> doTransaction({required BuildContext context}) async {}
-
+  // InvoiceId-gaar nfc tsatsaj ehlene
   void createNfcWithInvoiceId(
       {required BuildContext context,
       required String invoiceId,
       required isInvoice}) async {
     context.router.pop();
-    emit(state.copyWith(currentState: BottomSectionState.isScanning));
 
     var content = invoiceId;
     var result = await flutterNfcHcePlugin.startNfcHce(content);
+    if (result.toString().toLowerCase() == "success") {
+      debugPrint("Invoicer started HCE");
+      emit(state.copyWith(
+          currentState: BottomSectionState.isScanning,
+          waitingInvoiceId: invoiceId));
+      reoccuringBrute();
+    }
   }
 
+  // Utasnii nfc-tei holbootoi medeellwdiig avch hadgalana
   void getNfcRelatedInfo() async {
     String platformVersion =
         await flutterNfcHcePlugin.getPlatformVersion() ?? "";
@@ -195,6 +170,7 @@ class HomeCubit extends Cubit<HomeState> {
         isNfcEnabled: isNfcEnabled));
   }
 
+  // NFC unshih session ehlwleh ba, nfc oldvol ndef msg-s invoiceid-g avch terwgeer invoice detail avna
   void getInvoiceIdFromNfc({required BuildContext context}) {
     NfcManager.instance.startSession(onDiscovered: (NfcTag tag) async {
       result.value = tag.data;
@@ -205,8 +181,57 @@ class HomeCubit extends Cubit<HomeState> {
         var payload =
             tag.data["ndef"]["cachedMessage"]["records"][0]["payload"];
         String invoiceId = String.fromCharCodes(payload).substring(3);
-        getInvoiceWithInvoiceId(context: context, invoiceId: invoiceId);
+        getInvoiceAndPay(context: context, invoiceId: invoiceId);
       }
     });
+  }
+
+  // InvoiceId ashiglan delgerengui medeelliig avch, batalgaajuulah hesgiig haruulna
+  Future<void> getInvoiceAndPay(
+      {required BuildContext context, required String invoiceId}) async {
+    Map<String, dynamic>? invoiceItem = await getInvoiceById(invoiceId);
+    debugPrint("Reciever found HCE $invoiceId");
+    if (invoiceItem!["type"] == "take") {
+      dialogConfirmPin(
+          context, invoiceItem["amount"].toString(), "Temuulen", "5076 888 210",
+          (pinCode) async {
+        Map<String, dynamic>? account = await getAccount();
+        if (account!['pinCode'] == pinCode) {
+          doTransaction(context, invoiceItem);
+        } else {
+          dialogAlertFailed(
+              context: context,
+              title: "Unsuccessful",
+              desc: "Wrong Transaction Pin code",
+              btnText: "Close");
+        }
+      });
+    } else if (invoiceItem["isComplete"] == false) {
+      doTransaction(context, invoiceItem);
+    }
+  }
+
+  Future<void> doTransaction(
+      BuildContext context, Map<String, dynamic> invoice) async {
+    bool isPossible = await checkIfTransactionIsPossible(
+        invoice["type"], invoice["amount"], invoice["userId"]);
+
+    if (isPossible) {
+      String transactionRef = await createUserTransaction(invoice);
+      if (transactionRef.isNotEmpty) {
+        debugPrint("Transaction created: $transactionRef");
+        emit(state.copyWith(currentState: BottomSectionState.isDefault));
+        dialogSuccess(
+            context, invoice["amount"].toString(), "Temuulen", (p) {});
+        initUser();
+        initTransactions();
+      }
+    } else {
+      dialogAlertFailed(
+          context: context,
+          title: "Unsuccessful",
+          desc: "Insufficent balance",
+          btnText: "Close");
+    }
   }
 }

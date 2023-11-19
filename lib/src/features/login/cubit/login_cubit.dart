@@ -80,8 +80,8 @@ class LoginCubit extends Cubit<LoginState> {
   // OTP-g shalgah logic
   Future<void> checkTransactionPin({required BuildContext context}) async {
     // TODO: API (transaction pin code uusgesen baival)
-    Account? account = await getAccount();
-    if (account?.pinCode != null) {
+    Map<String, dynamic>? account = await getAccount();
+    if (account?['pinCode'] != null) {
       navToMainPage(context: context);
     } else {
       navToCreatePinPage(context: context);

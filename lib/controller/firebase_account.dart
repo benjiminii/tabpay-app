@@ -3,55 +3,30 @@ import 'package:flutter/cupertino.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:convert';
 
-class Account {
-  double? balance;
-  String userId;
-  Timestamp date;
-  int? pinCode;
-
-  Account({
-    required this.balance,
-    required this.userId,
-    required this.date,
-    required this.pinCode,
-  });
-
-  Map<String, dynamic> toJson() {
-    return {
-      'balance': balance,
-      'userId': userId,
-      'date': date.toDate(),
-      'pinCode': pinCode,
-    };
-  }
-}
-
-Future<Account?> getAccount() async {
-  Account? account;
-  Map<String, dynamic> data = {};
-  try {
-    User? user = FirebaseAuth.instance.currentUser;
-    DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
-        await FirebaseFirestore.instance
-            .collection('account')
-            .doc(user?.uid)
-            .get();
-    account = Account(
-      balance: documentSnapshot.data()!['balance'],
-      userId: documentSnapshot.data()!['userId'],
-      date: documentSnapshot.data()!['date'],
-      pinCode: documentSnapshot.data()!['pinCode'],
-    );
-  } catch (err) {
-    print('Error getting account info from Firestore: $err');
-  }
-  print("account: $account");
-  if (account == null) {
-    await createAccount();
-    return getAccount();
+Future<Map<String, dynamic>?> getAccount() async {
+  User? user = FirebaseAuth.instance.currentUser;
+  print('userId: ${user?.uid}');
+  if (user != null) {
+    try {
+      DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
+          await FirebaseFirestore.instance
+              .collection('account')
+              .doc(user.uid)
+              .get();
+      print("account: ${documentSnapshot.data()!}");
+      if (documentSnapshot.exists) {
+        return documentSnapshot.data();
+      } else {
+        await createAccount();
+        return getAccount();
+      }
+    } catch (err) {
+      print('Error getting account info from Firestore: $err');
+    }
   } else {
-    return account;
+    return null;
   }
+  return null;
 }
 
 Future<void> createAccount() async {
@@ -62,7 +37,7 @@ Future<void> createAccount() async {
         'userId': user.uid,
         'pinCode': null,
         'date': DateTime.now(),
-        'balanace': 100000
+        'balance': 100000,
       };
       await FirebaseFirestore.instance
           .collection('account')
@@ -92,4 +67,24 @@ Future<bool> setPinCode(String pinCode) async {
     print('Error setting pin code in Firestore: $err');
     return false;
   }
+}
+
+Future<Map<String, dynamic>?> getAccountById(String userId) async {
+  try {
+    DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
+        await FirebaseFirestore.instance
+            .collection('account')
+            .doc(userId)
+            .get();
+    print("account: ${documentSnapshot.data()!}");
+    if (documentSnapshot.exists) {
+      return documentSnapshot.data();
+    } else {
+      await createAccount();
+      return getAccount();
+    }
+  } catch (err) {
+    print('Error getting account info from Firestore: $err');
+  }
+  return null;
 }

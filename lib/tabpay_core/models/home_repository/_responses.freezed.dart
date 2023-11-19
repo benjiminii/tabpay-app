@@ -21,7 +21,7 @@ TransactionModel _$TransactionModelFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$TransactionModel {
   int get id => throw _privateConstructorUsedError;
-  String get createdDate => throw _privateConstructorUsedError;
+  DateTime? get createdDate => throw _privateConstructorUsedError;
   int get transactionAmount => throw _privateConstructorUsedError;
   int get remainingBalance => throw _privateConstructorUsedError;
   bool get isIncome => throw _privateConstructorUsedError;
@@ -41,7 +41,7 @@ abstract class $TransactionModelCopyWith<$Res> {
   @useResult
   $Res call(
       {int id,
-      String createdDate,
+      DateTime? createdDate,
       int transactionAmount,
       int remainingBalance,
       bool isIncome,
@@ -62,7 +62,7 @@ class _$TransactionModelCopyWithImpl<$Res, $Val extends TransactionModel>
   @override
   $Res call({
     Object? id = null,
-    Object? createdDate = null,
+    Object? createdDate = freezed,
     Object? transactionAmount = null,
     Object? remainingBalance = null,
     Object? isIncome = null,
@@ -73,10 +73,10 @@ class _$TransactionModelCopyWithImpl<$Res, $Val extends TransactionModel>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
-      createdDate: null == createdDate
+      createdDate: freezed == createdDate
           ? _value.createdDate
           : createdDate // ignore: cast_nullable_to_non_nullable
-              as String,
+              as DateTime?,
       transactionAmount: null == transactionAmount
           ? _value.transactionAmount
           : transactionAmount // ignore: cast_nullable_to_non_nullable
@@ -107,7 +107,7 @@ abstract class _$$TransactionModelImplCopyWith<$Res>
   @useResult
   $Res call(
       {int id,
-      String createdDate,
+      DateTime? createdDate,
       int transactionAmount,
       int remainingBalance,
       bool isIncome,
@@ -126,7 +126,7 @@ class __$$TransactionModelImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
-    Object? createdDate = null,
+    Object? createdDate = freezed,
     Object? transactionAmount = null,
     Object? remainingBalance = null,
     Object? isIncome = null,
@@ -137,10 +137,10 @@ class __$$TransactionModelImplCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
-      createdDate: null == createdDate
+      createdDate: freezed == createdDate
           ? _value.createdDate
           : createdDate // ignore: cast_nullable_to_non_nullable
-              as String,
+              as DateTime?,
       transactionAmount: null == transactionAmount
           ? _value.transactionAmount
           : transactionAmount // ignore: cast_nullable_to_non_nullable
@@ -166,7 +166,7 @@ class __$$TransactionModelImplCopyWithImpl<$Res>
 class _$TransactionModelImpl implements _TransactionModel {
   const _$TransactionModelImpl(
       {this.id = 0,
-      this.createdDate = '',
+      this.createdDate,
       this.transactionAmount = 0,
       this.remainingBalance = 0,
       this.isIncome = false,
@@ -179,8 +179,7 @@ class _$TransactionModelImpl implements _TransactionModel {
   @JsonKey()
   final int id;
   @override
-  @JsonKey()
-  final String createdDate;
+  final DateTime? createdDate;
   @override
   @JsonKey()
   final int transactionAmount;
@@ -240,7 +239,7 @@ class _$TransactionModelImpl implements _TransactionModel {
 abstract class _TransactionModel implements TransactionModel {
   const factory _TransactionModel(
       {final int id,
-      final String createdDate,
+      final DateTime? createdDate,
       final int transactionAmount,
       final int remainingBalance,
       final bool isIncome,
@@ -252,7 +251,7 @@ abstract class _TransactionModel implements TransactionModel {
   @override
   int get id;
   @override
-  String get createdDate;
+  DateTime? get createdDate;
   @override
   int get transactionAmount;
   @override

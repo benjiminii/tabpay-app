@@ -85,7 +85,7 @@ Widget statementItem({required bool isIncome, required TransactionModel item}) {
       const SizedBox(height: 10),
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 14),
-        child: textLabel(value: item.createdDate),
+        child: textLabel(value: item.createdDate.toString()),
       ),
       const SizedBox(height: 10),
       Padding(
@@ -131,7 +131,10 @@ Widget statementItem({required bool isIncome, required TransactionModel item}) {
 }
 
 class SuccessfulWidget extends StatelessWidget {
-  const SuccessfulWidget({Key? key}) : super(key: key);
+  const SuccessfulWidget({Key? key, required this.mainContext})
+      : super(key: key);
+  final BuildContext mainContext;
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -162,7 +165,7 @@ class SuccessfulWidget extends StatelessWidget {
                     buttonTextColor: Colors.white,
                     buttonLabel: "End",
                     onTap: () {
-                      context.read<HomeCubit>().finishTransaction(context);
+                      context.read<HomeCubit>().finishTransaction(mainContext);
                     }),
               ),
             ],
@@ -172,7 +175,8 @@ class SuccessfulWidget extends StatelessWidget {
 }
 
 class FailedWidget extends StatelessWidget {
-  const FailedWidget({Key? key}) : super(key: key);
+  const FailedWidget({Key? key, required this.mainContext}) : super(key: key);
+  final BuildContext mainContext;
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -203,7 +207,7 @@ class FailedWidget extends StatelessWidget {
                     buttonTextColor: Colors.white,
                     buttonLabel: "End",
                     onTap: () {
-                      context.read<HomeCubit>().finishTransaction(context);
+                      context.read<HomeCubit>().finishTransaction(mainContext);
                     }),
               ),
             ],
@@ -213,7 +217,9 @@ class FailedWidget extends StatelessWidget {
 }
 
 class ScanningWidget extends StatelessWidget {
-  const ScanningWidget({Key? key}) : super(key: key);
+  const ScanningWidget({Key? key, required this.mainContext}) : super(key: key);
+  final BuildContext mainContext;
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -244,7 +250,7 @@ class ScanningWidget extends StatelessWidget {
                     buttonTextColor: Colors.black,
                     buttonLabel: "Cancel",
                     onTap: () {
-                      context.read<HomeCubit>().finishTransaction(context);
+                      context.read<HomeCubit>().finishTransaction(mainContext);
                     }),
               ),
             ],

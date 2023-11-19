@@ -10,7 +10,9 @@ _$TransactionModelImpl _$$TransactionModelImplFromJson(
         Map<String, dynamic> json) =>
     _$TransactionModelImpl(
       id: json['id'] as int? ?? 0,
-      createdDate: json['createdDate'] as String? ?? '',
+      createdDate: json['createdDate'] == null
+          ? null
+          : DateTime.parse(json['createdDate'] as String),
       transactionAmount: json['transactionAmount'] as int? ?? 0,
       remainingBalance: json['remainingBalance'] as int? ?? 0,
       isIncome: json['isIncome'] as bool? ?? false,
@@ -21,7 +23,7 @@ Map<String, dynamic> _$$TransactionModelImplToJson(
         _$TransactionModelImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'createdDate': instance.createdDate,
+      'createdDate': instance.createdDate?.toIso8601String(),
       'transactionAmount': instance.transactionAmount,
       'remainingBalance': instance.remainingBalance,
       'isIncome': instance.isIncome,

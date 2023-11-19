@@ -21,8 +21,8 @@ class HomeMainPageState extends State<HomeMainPage> {
   void initState() {
     context.read<HomeCubit>().getInvoiceIdFromNfc(context: context);
     context.read<HomeCubit>().getNfcRelatedInfo();
-    context.read<HomeCubit>().initUser(context: context);
-    context.read<HomeCubit>().initTransactions(context: context);
+    context.read<HomeCubit>().initUser();
+    context.read<HomeCubit>().initTransactions();
     super.initState();
   }
 
@@ -83,24 +83,24 @@ class HomeMainPageState extends State<HomeMainPage> {
                     if (state.currentState == BottomSectionState.isDefault)
                       const TransactionsWidget(),
                     if (state.currentState == BottomSectionState.isSuccessful)
-                      const SuccessfulWidget(),
+                      SuccessfulWidget(mainContext: context),
                     if (state.currentState == BottomSectionState.isFailed)
-                      const FailedWidget(),
+                      FailedWidget(mainContext: context),
                     if (state.currentState == BottomSectionState.isScanning)
-                      const ScanningWidget(),
+                      ScanningWidget(mainContext: context),
                     if (state.currentState == BottomSectionState.isDefault)
                       SizedBox(
                         child: InkWell(
                           onTap: () {
                             context.router.push(NumpadRoute(
                                 onTap: (amount) {
-                                  context.read<HomeCubit>().createInvoice(
+                                  context.read<HomeCubit>().createInvoiceAndHCE(
                                       context: context,
                                       amount: amount,
                                       isInvoice: false);
                                 },
                                 onTap2: (amount) {
-                                  context.read<HomeCubit>().createInvoice(
+                                  context.read<HomeCubit>().createInvoiceAndHCE(
                                       context: context,
                                       amount: amount,
                                       isInvoice: true);

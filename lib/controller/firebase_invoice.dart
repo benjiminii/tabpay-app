@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-Future<String> createUserInvoice(int amount, type) async {
+Future<String> createUserInvoice(int amount, String type) async {
   User? user = FirebaseAuth.instance.currentUser;
   try {
     Map<String, dynamic> myInvoice = {
@@ -11,9 +11,11 @@ Future<String> createUserInvoice(int amount, type) async {
       'date': DateTime.now(),
       'type': type,
       'isComplete': false,
+      'id': '',
     };
     DocumentReference invoiceRef =
         await FirebaseFirestore.instance.collection('invoice').add(myInvoice);
+    await invoiceRef.update({'id': invoiceRef.id});
     return invoiceRef.id;
   } catch (e) {
     print('Error inserting invoice into Firestore: $e');
@@ -22,7 +24,6 @@ Future<String> createUserInvoice(int amount, type) async {
 }
 
 Future<Map<String, dynamic>?> getInvoiceById(String invoiceId) async {
-  // List<Map<String, dynamic>> dataList = [];
   try {
     DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
         await FirebaseFirestore.instance
@@ -44,7 +45,7 @@ Future<Map<String, dynamic>?> getInvoiceById(String invoiceId) async {
 
 Future<bool> setUserInvoiceComplete(String invoiceId) async {
   await FirebaseFirestore.instance
-      .collection('account')
+      .collection('invoice')
       .doc(invoiceId)
       .update({'isComplete': true});
   return true;
@@ -53,21 +54,16 @@ Future<bool> setUserInvoiceComplete(String invoiceId) async {
 Future<List<Map<String, dynamic>>> getUserInvoices() async {
   User? user = FirebaseAuth.instance.currentUser;
   List<Map<String, dynamic>> dataList = [];
-  if (user != null) {
-    print(user.uid);
-    try {
-      CollectionReference<Map<String, dynamic>> invoicesCollection =
-          FirebaseFirestore.instance.collection('invoices');
+  try {
+    CollectionReference<Map<String, dynamic>> invoicesCollection =
+        FirebaseFirestore.instance.collection('invoice');
 
-      QuerySnapshot<Map<String, dynamic>> snapshot =
-          await invoicesCollection.where('userId', isEqualTo: user.uid).get();
+    QuerySnapshot<Map<String, dynamic>> snapshot =
+        await invoicesCollection.where('userId', isEqualTo: user?.uid).get();
 
-      dataList = snapshot.docs.map((doc) => doc.data()).toList();
-    } catch (e) {
-      print('Error retrieving user data from Firestore: $e');
-    }
-  } else {
-    print('User is not logged in');
+    dataList = snapshot.docs.map((doc) => doc.data()).toList();
+  } catch (e) {
+    print('Error retrieving user data from Firestore: $e');
   }
 
   return dataList;

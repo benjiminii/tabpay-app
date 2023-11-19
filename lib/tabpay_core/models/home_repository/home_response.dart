@@ -4,7 +4,7 @@ part of responses;
 class TransactionModel with _$TransactionModel {
   const factory TransactionModel({
     @Default(0) int id,
-    @Default('') String createdDate,
+    DateTime? createdDate,
     @Default(0) int transactionAmount,
     @Default(0) int remainingBalance,
     @Default(false) bool isIncome,
