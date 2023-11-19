@@ -4,10 +4,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:convert';
 
 class Account {
-  double balance;
+  double? balance;
   String userId;
   Timestamp date;
-  int pinCode;
+  int? pinCode;
 
   Account({
     required this.balance,
@@ -26,12 +26,11 @@ class Account {
   }
 }
 
-Future<Map<String, dynamic>?> getAccount() async {
+Future<Account?> getAccount() async {
   Account? account;
-  Map<String, dynamic> sda = {};
+  Map<String, dynamic> data = {};
   try {
     User? user = FirebaseAuth.instance.currentUser;
-    // Insert user info to Firestore using the auth UUID
     DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
         await FirebaseFirestore.instance
             .collection('account')
@@ -43,18 +42,16 @@ Future<Map<String, dynamic>?> getAccount() async {
       date: documentSnapshot.data()!['date'],
       pinCode: documentSnapshot.data()!['pinCode'],
     );
-    sda = documentSnapshot.data()!;
   } catch (err) {
     print('Error getting account info from Firestore: $err');
   }
-  return sda;
-  // if (account == null) {
-  //   // await createAccount();
-  //   // return getAccount();
-  //   return account;
-  // } else {
-  //   return account;
-  // }
+  print("account: $account");
+  if (account == null) {
+    await createAccount();
+    return getAccount();
+  } else {
+    return account;
+  }
 }
 
 Future<void> createAccount() async {
@@ -78,18 +75,21 @@ Future<void> createAccount() async {
   }
 }
 
-Future<void> setPinCode(String pinCode) async {
+Future<bool> setPinCode(String pinCode) async {
   try {
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       // Insert user info to Firestore using the auth UUID
       await FirebaseFirestore.instance
-          .collection('users')
+          .collection('account')
           .doc(user.uid)
           .update({'pinCode': pinCode});
     }
+    print('Ping created: $pinCode');
+    return true;
   } catch (err) {
     // Handle the error
     print('Error setting pin code in Firestore: $err');
+    return false;
   }
 }

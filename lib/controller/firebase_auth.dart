@@ -31,7 +31,6 @@ Future<void> authOTP(
       smsCode: otpCode,
     );
     await auth.signInWithCredential(credential);
-    await getAccount();
   } catch (err) {
     print('Error signing in with OTP: $err');
   }

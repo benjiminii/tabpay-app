@@ -85,43 +85,40 @@ class MyAppState extends State<MyApp> {
 
   void _tagRead() {
     NfcManager.instance.startSession(onDiscovered: (NfcTag tag) async {
-      result.value = tag.data;
-      // var payload = tag.data["isodep"]["identifier"][0];
       var payload = tag.data["ndef"]["cachedMessage"]["records"][0]["payload"];
-      // print(tag.data["ndef"]["cachedMessage"]["record"][0]["payload"]);
+      result.value = String.fromCharCodes(payload);
       print(String.fromCharCodes(payload));
-      // NfcManager.instance.stopSession();
     });
   }
 
   void _ndefWrite() {
     NfcManager.instance.startSession(onDiscovered: (NfcTag tag) async {
-      var ndef = IsoDep.from(tag);
+      var ndef = Ndef.from(tag);
       print(ndef);
-      // if (ndef == null || !ndef.isWritable) {
-      //   result.value = 'Tag is not ndef writable';
-      //   NfcManager.instance.stopSession(errorMessage: result.value);
-      //   return;
-      // }
+      if (ndef == null || !ndef.isWritable) {
+        result.value = 'Tag is not ndef writable';
+        NfcManager.instance.stopSession(errorMessage: result.value);
+        return;
+      }
 
-      // NdefMessage message = NdefMessage([
-      //   NdefRecord.createText('Hello World!'),
-      //   NdefRecord.createUri(Uri.parse('https://flutter.dev')),
-      //   NdefRecord.createMime(
-      //       'text/plain', Uint8List.fromList('Hello'.codeUnits)),
-      //   NdefRecord.createExternal(
-      //       'com.example', 'mytype', Uint8List.fromList('mydata'.codeUnits)),
-      // ]);
+      NdefMessage message = NdefMessage([
+        NdefRecord.createText('Hello World!'),
+        NdefRecord.createUri(Uri.parse('https://flutter.dev')),
+        NdefRecord.createMime(
+            'text/plain', Uint8List.fromList('Hello'.codeUnits)),
+        NdefRecord.createExternal(
+            'com.example', 'mytype', Uint8List.fromList('mydata'.codeUnits)),
+      ]);
 
-      // try {
-      //   await ndef.write(message);
-      //   result.value = 'Success to "Ndef Write"';
-      //   NfcManager.instance.stopSession();
-      // } catch (e) {
-      //   result.value = e;
-      //   NfcManager.instance.stopSession(errorMessage: result.value.toString());
-      //   return;
-      // }
+      try {
+        await ndef.write(message);
+        result.value = 'Success to "Ndef Write"';
+        NfcManager.instance.stopSession();
+      } catch (e) {
+        result.value = e;
+        NfcManager.instance.stopSession(errorMessage: result.value.toString());
+        return;
+      }
     });
   }
 

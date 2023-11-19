@@ -80,14 +80,12 @@ class LoginCubit extends Cubit<LoginState> {
   // OTP-g shalgah logic
   Future<void> checkTransactionPin({required BuildContext context}) async {
     // TODO: API (transaction pin code uusgesen baival)
-    Map<String, dynamic>? account = await getAccount();
-    print('account');
-    print(account);
-    // if (account?.pinCode != null) {
-    //   navToMainPage(context: context);
-    // } else {
-    //   navToCreatePinPage(context: context);
-    // }
+    Account? account = await getAccount();
+    if (account?.pinCode != null) {
+      navToMainPage(context: context);
+    } else {
+      navToCreatePinPage(context: context);
+    }
   }
 
   // Pin uusgeh huudasnii logic
@@ -113,8 +111,8 @@ class LoginCubit extends Cubit<LoginState> {
   // Pin code uusgeh logic
   Future<void> createPinCode(
       {required BuildContext context, required String pinCode}) async {
-    // TODO: API (Pin code uusgeh) amjilttai bolson bol
-    if (true) {
+    bool success = await setPinCode(pinCode);
+    if (success) {
       navToMainPage(context: context);
     }
   }

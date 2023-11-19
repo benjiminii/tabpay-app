@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 // ignore: depend_on_referenced_packages
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:tabpay_app/controller/firebase_invoice.dart';
 import 'package:tabpay_app/tabpay_core/models/home_repository/_responses.dart';
 import 'package:auto_route/auto_route.dart';
 
@@ -119,10 +120,13 @@ class HomeCubit extends Cubit<HomeState> {
       {required BuildContext context,
       required int amount,
       required bool isInvoice}) async {
-    emit(state.copyWith(currentState: BottomSectionState.isScanning));
-
-    await context.router.pop();
-    await Future.delayed(const Duration(seconds: 2));
-    await waitForScan(amount: amount, isInvoice: isInvoice);
+    String invoiceId = await createInvoice(amount);
+    print('invoiceId: $invoiceId');
+    Map<String, dynamic>? sda = await getInvoiceById(invoiceId);
+    print(sda);
+    // emit(state.copyWith(currentState: BottomSectionState.isScanning));
+    // await context.router.pop();
+    // await Future.delayed(const Duration(seconds: 2));
+    // await waitForScan(amount: amount, isInvoice: isInvoice);
   }
 }
