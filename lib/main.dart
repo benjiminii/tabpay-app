@@ -70,7 +70,7 @@ class MyApp extends StatelessWidget {
             ),
             // theme: appThemeData[states.theme]!.themeData,
             builder: (context, child) {
-              return Scaffold(resizeToAvoidBottomInset: false, body: child!);
+              return Scaffold(resizeToAvoidBottomInset: true, body: child!);
             },
           ),
         );

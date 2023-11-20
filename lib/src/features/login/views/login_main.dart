@@ -51,50 +51,52 @@ class LoginMainPageState extends State<LoginMainPage> {
         onTap: () {
           FocusScope.of(context).unfocus();
         },
-        child: Container(
-          color: Colors.white,
-          width: size.width,
-          padding: const EdgeInsets.symmetric(horizontal: 40),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const SizedBox(height: 150),
-              Image.asset(
-                Assets.images.login.login.path,
-                height: 130,
-                width: 130,
-                // color: Colors.bl
-                fit: BoxFit.contain,
-              ),
-              const SizedBox(height: 50),
-              textLabel(value: "Enter your Phone number", fontSize: 23),
-              const SizedBox(height: 9),
-              textLabel(
-                  value: "We will send you the 4 digit verification code",
-                  fontSize: 12,
-                  color: Colors.grey),
-              const SizedBox(height: 35),
-              InputMultiIcon(
-                controller: _usernameController,
-                onChanged: (string) {},
-                keyboardType: TextInputType.number,
-                prefixIcon: SvgPicture.asset(
-                  Assets.images.login.phoneNumberIcon.path,
-                  height: 10,
-                  width: 10,
-                  color: Colors.black,
-                  fit: BoxFit.scaleDown,
+        child: SingleChildScrollView(
+          child: Container(
+            color: Colors.white,
+            width: size.width,
+            padding: const EdgeInsets.symmetric(horizontal: 40),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(height: 150),
+                Image.asset(
+                  Assets.images.login.login.path,
+                  height: 130,
+                  width: 130,
+                  // color: Colors.bl
+                  fit: BoxFit.contain,
                 ),
-                suffixIcon: showIcon
-                    ? const Icon(
-                        Icons.check_circle_rounded,
-                        color: Colors.lightGreen,
-                      )
-                    : null,
-                hintText: "Phone number",
-              ),
-            ],
+                const SizedBox(height: 50),
+                textLabel(value: "Enter your Phone number", fontSize: 23),
+                const SizedBox(height: 9),
+                textLabel(
+                    value: "We will send you the 4 digit verification code",
+                    fontSize: 12,
+                    color: Colors.grey),
+                const SizedBox(height: 35),
+                InputMultiIcon(
+                  controller: _usernameController,
+                  onChanged: (string) {},
+                  keyboardType: TextInputType.number,
+                  prefixIcon: SvgPicture.asset(
+                    Assets.images.login.phoneNumberIcon.path,
+                    height: 10,
+                    width: 10,
+                    color: Colors.black,
+                    fit: BoxFit.scaleDown,
+                  ),
+                  suffixIcon: showIcon
+                      ? const Icon(
+                          Icons.check_circle_rounded,
+                          color: Colors.lightGreen,
+                        )
+                      : null,
+                  hintText: "Phone number",
+                ),
+              ],
+            ),
           ),
         ),
       ),

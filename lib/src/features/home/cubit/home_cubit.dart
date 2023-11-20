@@ -33,6 +33,8 @@ class HomeCubit extends Cubit<HomeState> {
   reoccuringBrute() {
     Timer.periodic(const Duration(seconds: 2), (timer) {
       if (state.currentState != BottomSectionState.isScanning) {
+        initUser();
+        initTransactions();
         debugPrint("Invoicer stopped checking status");
         timer.cancel();
       } else {
@@ -67,7 +69,11 @@ class HomeCubit extends Cubit<HomeState> {
             : (user?.uid == transactions[i]["userId"]
                 ? transactions[i]["invoiceRemainingBalance"]
                 : transactions[i]["remainingBalance"]),
-        description: transactions[i]["type"] == "take" ? "Income" : "Outcome",
+        description: transactions[i]["type"] == "take"
+            ? (user?.uid == transactions[i]["invoicerId"]
+                ? "Income"
+                : "Outcome")
+            : (user?.uid == transactions[i]["userId"] ? "Income" : "Outcome"),
         isIncome: transactions[i]["type"] == "take"
             ? (user?.uid == transactions[i]["invoicerId"] ? true : false)
             : (user?.uid == transactions[i]["userId"] ? true : false),

@@ -65,127 +65,130 @@ class LoginVerificationPageState extends State<LoginVerificationPage> {
         onTap: () {
           FocusScope.of(context).unfocus();
         },
-        child: Container(
-          color: Colors.white,
-          width: size.width,
-          padding: const EdgeInsets.symmetric(horizontal: 40),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const SizedBox(height: 150),
-              Image.asset(
-                Assets.images.login.login.path,
-                height: 130,
-                width: 130,
-                // color: Colors.bl
-                fit: BoxFit.contain,
-              ),
-              const SizedBox(height: 50),
-              textLabel(value: "OTP Verification", fontSize: 23),
-              const SizedBox(height: 9),
-              textLabel(
-                  value: "Enter the OTP sent to ${widget.phoneNumber}",
-                  fontSize: 12,
-                  color: Colors.grey),
-              const SizedBox(height: 35),
-              Pinput(
-                key: const Key("validation_otp_pinput"),
-                length: 6,
-                controller: _pinController,
-                // autofocus: false,
-                // Auto focus here ^
-                cursor: Container(
-                    margin: const EdgeInsets.only(top: 20),
-                    width: 10,
-                    height: 1,
-                    color: Colors.black),
-                defaultPinTheme: PinTheme(
-                  width: 62.86,
-                  height: 63,
-                  textStyle: const TextStyle(
-                      fontSize: 20,
-                      color: Colors.black,
-                      fontWeight: FontWeight.w600),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
+        child: SingleChildScrollView(
+          child: Container(
+            color: Colors.white,
+            width: size.width,
+            padding: const EdgeInsets.symmetric(horizontal: 40),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(height: 150),
+                Image.asset(
+                  Assets.images.login.login.path,
+                  height: 130,
+                  width: 130,
+                  // color: Colors.bl
+                  fit: BoxFit.contain,
                 ),
-                focusedPinTheme: PinTheme(
-                  width: 62.86,
-                  height: 63,
-                  textStyle: const TextStyle(
-                      fontSize: 20,
-                      color: Colors.black,
-                      fontWeight: FontWeight.w600),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black),
-                    borderRadius: BorderRadius.circular(15),
-                    color: Colors.transparent,
+                const SizedBox(height: 50),
+                textLabel(value: "OTP Verification", fontSize: 23),
+                const SizedBox(height: 9),
+                textLabel(
+                    value: "Enter the OTP sent to ${widget.phoneNumber}",
+                    fontSize: 12,
+                    color: Colors.grey),
+                const SizedBox(height: 35),
+                Pinput(
+                  key: const Key("validation_otp_pinput"),
+                  length: 6,
+                  controller: _pinController,
+                  // autofocus: false,
+                  // Auto focus here ^
+                  cursor: Container(
+                      margin: const EdgeInsets.only(top: 20),
+                      width: 10,
+                      height: 1,
+                      color: Colors.black),
+                  defaultPinTheme: PinTheme(
+                    width: 62.86,
+                    height: 63,
+                    textStyle: const TextStyle(
+                        fontSize: 20,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w600),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
                   ),
-                ),
-                submittedPinTheme: PinTheme(
-                  width: 62.86,
-                  height: 63,
-                  textStyle: const TextStyle(
-                      fontSize: 20,
-                      color: Colors.black,
-                      fontWeight: FontWeight.w600),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
-                    borderRadius: BorderRadius.circular(15),
-                    color: Colors.transparent,
+                  focusedPinTheme: PinTheme(
+                    width: 62.86,
+                    height: 63,
+                    textStyle: const TextStyle(
+                        fontSize: 20,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w600),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black),
+                      borderRadius: BorderRadius.circular(15),
+                      color: Colors.transparent,
+                    ),
                   ),
+                  submittedPinTheme: PinTheme(
+                    width: 62.86,
+                    height: 63,
+                    textStyle: const TextStyle(
+                        fontSize: 20,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w600),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(15),
+                      color: Colors.transparent,
+                    ),
+                  ),
+                  pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
+                  showCursor: true,
+                  obscureText: false,
+                  onCompleted: (pin) {
+                    _pinController.text = pin;
+                    context.read<LoginCubit>().verifyOtp(
+                        context: context, otpCode: _pinController.text);
+                  },
                 ),
-                pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
-                showCursor: true,
-                obscureText: false,
-                onCompleted: (pin) {
-                  _pinController.text = pin;
-                  context.read<LoginCubit>().verifyOtp(
-                      context: context, otpCode: _pinController.text);
-                },
-              ),
-              const SizedBox(height: 12),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  textLabel(value: "Didn’t receive OTP?"),
-                  const SizedBox(width: 10),
-                  timerEnd
-                      ? GestureDetector(
-                          onTap: () {
-                            onResend();
-                          },
-                          child: textLabel(value: "Resend", color: Colors.red))
-                      : CountdownTimer(
-                          widgetBuilder: (context, time) {
-                            if (time == null) {
-                              return GestureDetector(
-                                onTap: () {
-                                  onResend();
-                                },
-                                child: textLabel(
-                                  value: "Resend",
-                                  color: Colors.red,
-                                ),
+                const SizedBox(height: 12),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    textLabel(value: "Didn’t receive OTP?"),
+                    const SizedBox(width: 10),
+                    timerEnd
+                        ? GestureDetector(
+                            onTap: () {
+                              onResend();
+                            },
+                            child:
+                                textLabel(value: "Resend", color: Colors.red))
+                        : CountdownTimer(
+                            widgetBuilder: (context, time) {
+                              if (time == null) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    onResend();
+                                  },
+                                  child: textLabel(
+                                    value: "Resend",
+                                    color: Colors.red,
+                                  ),
+                                );
+                              }
+                              return textLabel(
+                                value: '00:${time.sec}',
                               );
-                            }
-                            return textLabel(
-                              value: '00:${time.sec}',
-                            );
-                          },
-                          endTime: endTime,
-                          onEnd: () {
-                            // setState(() {
-                            timerEnd = true;
-                            // });
-                          }),
-                ],
-              ),
-              const SizedBox(height: 40),
-            ],
+                            },
+                            endTime: endTime,
+                            onEnd: () {
+                              // setState(() {
+                              timerEnd = true;
+                              // });
+                            }),
+                  ],
+                ),
+                const SizedBox(height: 40),
+              ],
+            ),
           ),
         ),
       ),

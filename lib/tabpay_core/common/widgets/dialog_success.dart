@@ -6,9 +6,11 @@ import 'package:tabpay_app/tabpay_core/tabpay_core.dart';
 import 'package:tabpay_app/tabpay_core/utils/fingerprint_helper.dart';
 import 'package:tabpay_app/tabpay_core/utils/shared_prefs.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:intl/intl.dart';
 
-Future<String?> dialogSuccess(BuildContext context, String amount, String nmae,
+Future<String?> dialogSuccess(BuildContext context, String amount, String name,
     Function(String) onClick) async {
+  var formatter = NumberFormat.currency(locale: 'en_EU', symbol: '');
   return await showGeneralDialog(
     pageBuilder: (context, animation, secondaryAnimation) {
       if (SharedPrefs().biometricPin.isNotEmpty) {
@@ -91,7 +93,7 @@ Future<String?> dialogSuccess(BuildContext context, String amount, String nmae,
                           SizedBox(
                             width: size.width,
                             child: textLabel(
-                                value: "Temuulen",
+                                value: name,
                                 fontSize: 23,
                                 align: TextAlign.center,
                                 color: Colors.white),
@@ -100,7 +102,12 @@ Future<String?> dialogSuccess(BuildContext context, String amount, String nmae,
                             padding: EdgeInsets.symmetric(
                                 horizontal: getHorizontalSize(22)),
                             child: textLabel(
-                                value: "5115 284 130",
+                                value: (formatter.format(int.parse(amount)))
+                                    .toMoney(),
+
+                                // value:
+                                //     ("${formatter.format(int.parse(amount))}.00")
+                                //         .toMoney(),
                                 align: TextAlign.center,
                                 color: Colors.white),
                           ),

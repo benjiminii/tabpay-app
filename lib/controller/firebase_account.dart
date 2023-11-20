@@ -22,11 +22,12 @@ Future<Map<String, dynamic>?> getAccount() async {
       }
     } catch (err) {
       print('Error getting account info from Firestore: $err');
+      await createAccount();
+      return getAccount();
     }
   } else {
     return null;
   }
-  return null;
 }
 
 Future<void> createAccount() async {
