@@ -53,10 +53,9 @@ class LoginCubit extends Cubit<LoginState> {
   // OTP uusgeh logic
   Future<void> generateOtp(
       {required BuildContext context, required String phoneNumber}) async {
-    await verifyPhoneNumber(phoneNumber, (verificationId) {
+    await verifyPhoneNumber(phoneNumber, context, (verificationId) {
       emit(state.copyWith(
           phoneNumber: phoneNumber, verificationId: verificationId));
-
       navToOtpPage(context: context);
     });
   }
@@ -64,11 +63,11 @@ class LoginCubit extends Cubit<LoginState> {
   // OTP-g shalgah logic
   Future<void> verifyOtp(
       {required BuildContext context, required String otpCode}) async {
-    try {
-      await authOTP(state.verificationId, otpCode, context);
-
+    bool success = await authOTP(state.verificationId, otpCode, context);
+    print("OTP: $success");
+    if (success) {
       checkTransactionPin(context: context);
-    } catch (err) {
+    } else {
       dialogAlertFailed(
           context: context,
           title: "Unsuccessful",
